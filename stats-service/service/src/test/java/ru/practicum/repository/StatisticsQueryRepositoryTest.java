@@ -22,14 +22,10 @@ public class StatisticsQueryRepositoryTest {
     @Mock
     private StatisticsQueryRepository statisticsQueryRepository;
 
-    @Mock
-    private RequestHitEntity requestHitEntity;
-
     @Test
     public void shouldTestGetViewStatsByDateRange() {
         LocalDateTime start = LocalDateTime.now().minusDays(1);
         LocalDateTime end = LocalDateTime.now();
-        List<String> uris = Arrays.asList("/test1", "/test2");
 
         RequestStatsView statsView1 = new RequestStatsView("app1", "/test1", 10);
         RequestStatsView statsView2 = new RequestStatsView("app2", "/test2", 20);
