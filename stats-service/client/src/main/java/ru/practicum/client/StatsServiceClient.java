@@ -17,6 +17,7 @@ import java.util.Map;
 @Slf4j
 @Service
 public class StatsServiceClient extends HttpRequestClient {
+
     private static final String HIT_PREFIX = "/hit";
     private static final String START_PREFIX = "/start";
 
@@ -30,8 +31,10 @@ public class StatsServiceClient extends HttpRequestClient {
         );
     }
 
-    public ResponseEntity<Object> getStatistic(String start, String end,
-                                               List<String> uris, Boolean unique) {
+    public ResponseEntity<Object> getStatistic(
+            String start, String end,
+            List<String> uris, Boolean unique
+    ) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("start", start);
         parameters.put("end", end);
