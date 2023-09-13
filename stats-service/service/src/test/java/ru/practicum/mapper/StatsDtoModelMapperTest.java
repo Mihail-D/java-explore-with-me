@@ -23,7 +23,7 @@ public class StatsDtoModelMapperTest {
     }
 
     @Test
-    public void test_minimum_values() {
+    public void shouldTestMinimumValues() {
         RequestStatsView viewStats = new RequestStatsView("", "", 0);
         StatsResponseDto expected = StatsResponseDto.builder()
                 .app("")
@@ -37,7 +37,7 @@ public class StatsDtoModelMapperTest {
     }
 
     @Test
-    public void test_maximum_values() {
+    public void shouldTestMaximumValues() {
         RequestStatsView viewStats = new RequestStatsView("app", "uri", Long.MAX_VALUE);
         StatsResponseDto expected = StatsResponseDto.builder()
                 .app("app")
@@ -51,7 +51,7 @@ public class StatsDtoModelMapperTest {
     }
 
     @Test
-    public void test_null_values() {
+    public void shouldTestNullValues() {
         RequestStatsView viewStats = new RequestStatsView(null, null, 0);
         StatsResponseDto expected = StatsResponseDto.builder()
                 .app(null)
@@ -65,7 +65,7 @@ public class StatsDtoModelMapperTest {
     }
 
     @Test
-    public void test_empty_app() {
+    public void shouldTestEmptyApp() {
         RequestStatsView viewStats = new RequestStatsView("", "uri", 10);
         StatsResponseDto expected = StatsResponseDto.builder()
                 .app("")
@@ -79,7 +79,7 @@ public class StatsDtoModelMapperTest {
     }
 
     @Test
-    public void test_empty_uri() {
+    public void shouldTestEmptyUri() {
         RequestStatsView viewStats = new RequestStatsView("app", "", 10);
         StatsResponseDto expected = StatsResponseDto.builder()
                 .app("app")
@@ -91,5 +91,4 @@ public class StatsDtoModelMapperTest {
 
         assertEquals(expected, result);
     }
-
 }

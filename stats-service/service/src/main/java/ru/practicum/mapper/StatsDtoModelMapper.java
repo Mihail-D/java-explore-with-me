@@ -8,6 +8,7 @@ import ru.practicum.model.RequestStatsView;
 
 @UtilityClass
 public class StatsDtoModelMapper {
+
     public static StatsResponseDto toStatsResponseDto(RequestStatsView viewStats) {
         return StatsResponseDto.builder()
                 .app(viewStats.getApp())

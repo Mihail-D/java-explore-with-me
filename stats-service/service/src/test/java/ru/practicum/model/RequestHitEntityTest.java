@@ -17,32 +17,32 @@ public class RequestHitEntityTest {
     }
 
     @Test
-    public void testId() {
+    public void shouldTestId() {
         requestHitEntity.setId(1L);
         assertEquals(1L, requestHitEntity.getId());
     }
 
     @Test
-    public void testUri() {
+    public void shouldTestUri() {
         requestHitEntity.setUri("example.com");
         assertEquals("example.com", requestHitEntity.getUri());
     }
 
     @Test
-    public void testTimestamp() {
+    public void shouldTestTimestamp() {
         LocalDateTime now = LocalDateTime.now();
         requestHitEntity.setTimestamp(now);
         assertEquals(now, requestHitEntity.getTimestamp());
     }
 
     @Test
-    public void testIp() {
+    public void shouldTestIp() {
         requestHitEntity.setIp("127.0.0.1");
         assertEquals("127.0.0.1", requestHitEntity.getIp());
     }
 
     @Test
-    public void testApp() {
+    public void shouldTestApp() {
         requestHitEntity.setApp("app");
         assertEquals("app", requestHitEntity.getApp());
     }

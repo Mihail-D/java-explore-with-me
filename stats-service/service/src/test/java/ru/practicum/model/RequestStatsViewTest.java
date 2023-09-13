@@ -15,34 +15,34 @@ public class RequestStatsViewTest {
     }
 
     @Test
-    public void testGetApp() {
+    public void shouldTestGetApp() {
         assertEquals("TestApp", requestStatsView.getApp());
     }
 
     @Test
-    public void testGetUri() {
+    public void shouldTestGetUri() {
         assertEquals("/test/uri", requestStatsView.getUri());
     }
 
     @Test
-    public void testGetCount() {
+    public void shouldTestGetCount() {
         assertEquals(100, requestStatsView.getCount());
     }
 
     @Test
-    public void testSetApp() {
+    public void shouldTestSetApp() {
         requestStatsView.setApp("NewApp");
         assertEquals("NewApp", requestStatsView.getApp());
     }
 
     @Test
-    public void testSetUri() {
+    public void shouldTestSetUri() {
         requestStatsView.setUri("/new/uri");
         assertEquals("/new/uri", requestStatsView.getUri());
     }
 
     @Test
-    public void testSetCount() {
+    public void shouldTestSetCount() {
         requestStatsView.setCount(200);
         assertEquals(200, requestStatsView.getCount());
     }

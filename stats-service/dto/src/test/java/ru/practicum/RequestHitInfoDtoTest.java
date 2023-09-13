@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class RequestHitInfoDtoTest {
 
     @Test
-    public void test_createRequestHitInfoDtoWithValidParameters() {
+    public void shouldCreateRequestHitInfoDtoWithValidParameters() {
         RequestHitInfoDto requestHitInfoDto = RequestHitInfoDto.builder()
                 .uri("example.com")
                 .ip("127.0.0.1")
@@ -27,7 +27,7 @@ public class RequestHitInfoDtoTest {
     }
 
     @Test
-    public void test_accessAndModifyUriIpAndAppFields() {
+    public void shouldAccessAndModifyUriIpAndAppFields() {
         RequestHitInfoDto requestHitInfoDto = RequestHitInfoDto.builder()
                 .uri("example.com")
                 .ip("127.0.0.1")
@@ -49,7 +49,7 @@ public class RequestHitInfoDtoTest {
     }
 
     @Test
-    public void test_accessAndModifyTimestampField() {
+    public void shouldAccessAndModifyTimestampField() {
         LocalDateTime timestamp = LocalDateTime.now();
 
         RequestHitInfoDto requestHitInfoDto = RequestHitInfoDto.builder()
@@ -68,7 +68,7 @@ public class RequestHitInfoDtoTest {
     }
 
     @Test
-    public void test_exceptionThrownWhenCreatingRequestHitInfoDtoWithNullFields() {
+    public void shouldExceptionThrownWhenCreatingRequestHitInfoDtoWithNullFields() {
         assertThrows(ConstraintViolationException.class, () -> {
             RequestHitInfoDto.builder()
                     .uri(null)
@@ -98,7 +98,7 @@ public class RequestHitInfoDtoTest {
     }
 
     @Test
-    public void test_exceptionThrownWhenCreatingRequestHitInfoDtoWithEmptyFields() {
+    public void shouldExceptionThrownWhenCreatingRequestHitInfoDtoWithEmptyFields() {
         assertThrows(ConstraintViolationException.class, () -> {
             RequestHitInfoDto.builder()
                     .uri("")
@@ -128,7 +128,7 @@ public class RequestHitInfoDtoTest {
     }
 
     @Test
-    public void test_exceptionThrownWhenCreatingRequestHitInfoDtoWithInvalidTimestampFormat() {
+    public void shouldExceptionThrownWhenCreatingRequestHitInfoDtoWithInvalidTimestampFormat() {
         assertThrows(DateTimeParseException.class, () -> {
             RequestHitInfoDto.builder()
                     .uri("example.com")

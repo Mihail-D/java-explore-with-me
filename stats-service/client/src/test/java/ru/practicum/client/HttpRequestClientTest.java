@@ -37,7 +37,7 @@ class HttpRequestClientTest {
     }
 
     @Test
-    void testGet() {
+    void shouldTestGet() {
         String path = "/test";
         Long userId = 1L;
         Map<String, Object> parameters = new HashMap<>();

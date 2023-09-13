@@ -29,7 +29,7 @@ public class StatisticsQueryRepositoryTest {
     private RequestHitEntity requestHitEntity;
 
     @Test
-    public void testGetViewStatsByDateRange() {
+    public void shouldTestGetViewStatsByDateRange() {
         LocalDateTime start = LocalDateTime.now().minusDays(1);
         LocalDateTime end = LocalDateTime.now();
         List<String> uris = Arrays.asList("/test1", "/test2");
@@ -51,4 +51,3 @@ public class StatisticsQueryRepositoryTest {
         assertEquals(20, result.get(1).getCount());
     }
 }
-

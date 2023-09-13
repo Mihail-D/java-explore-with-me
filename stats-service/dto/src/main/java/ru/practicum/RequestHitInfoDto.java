@@ -16,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestHitInfoDto {
+
     @NotBlank(message = "URI cannot be empty")
     private String uri;
     @NotBlank(message = "User IP cannot be empty")
@@ -42,5 +43,3 @@ public class RequestHitInfoDto {
         return requestHitInfoDto;
     }
 }
-
-

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class StatisticsProcessingServiceImpl implements StatisticsProcessingService {
+
     private final StatisticsQueryRepository statisticRepository;
 
     @Override

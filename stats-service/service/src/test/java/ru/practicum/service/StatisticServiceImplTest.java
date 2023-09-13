@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class StatisticServiceImplTest {
+
     @Mock
     private StatisticsQueryRepository statisticRepository;
     @InjectMocks
@@ -41,15 +42,14 @@ class StatisticServiceImplTest {
     }
 
     @Test
-    void postHitWhenIsOk() {
+    void shouldPostHitWhenIsOk() {
         statisticService.postHit(hitRequestDto);
         verify(statisticRepository).save(any(RequestHitEntity.class));
 
     }
 
-
     @Test
-    void getStatistics() {
+    void shouldGetStatistics() {
         LocalDateTime start = LocalDateTime.of(2023, 8, 4, 0, 0, 0);
         LocalDateTime end = LocalDateTime.of(2023, 8, 5, 0, 0, 0);
         List<String> uris = new ArrayList<>();

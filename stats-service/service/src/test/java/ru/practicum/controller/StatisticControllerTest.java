@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.practicum.RequestHitInfoDto;
 import ru.practicum.StatsResponseDto;
-import ru.practicum.controller.StatisticsApiController;
 import ru.practicum.service.StatisticsProcessingService;
 
 import java.time.LocalDateTime;
@@ -31,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest
 @ExtendWith(MockitoExtension.class)
 class StatisticControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -63,9 +63,9 @@ class StatisticControllerTest {
                 .build();
     }
 
-    @SneakyThrows
     @Test
-    void postEndpointHit_WhenStatusIsOk() {
+    @SneakyThrows
+    void shouldPostEndpointHitWhenStatusIsOk() {
         String result = mockMvc.perform(MockMvcRequestBuilders.post(HIT_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(hitRequestDto)))
@@ -80,7 +80,7 @@ class StatisticControllerTest {
 
     @Test
     @SneakyThrows
-    void getStatistic_WhenStatusIsOk() {
+    void shouldGetStatisticWhenStatusIsOk() {
         LocalDateTime start = LocalDateTime.now();
         LocalDateTime end = start.plusHours(1);
 
@@ -101,7 +101,7 @@ class StatisticControllerTest {
 
     @Test
     @SneakyThrows
-    void getStatistic_whenEndIsNotExist_thenReturnedBadRequest() {
+    void shouldGetStatisticWhenEndIsNotExistThenReturnedBadRequest() {
         mockMvc.perform(get(STATS_URL)
                         .param("start", "2023-01-01 00:11:00"))
                 .andExpect(status().isBadRequest());
@@ -111,7 +111,7 @@ class StatisticControllerTest {
 
     @Test
     @SneakyThrows
-    void getStatistic_whenStartIsNotExist_thenReturnedBadRequest() {
+    void shouldGetStatisticWhenStartIsNotExistThenReturnedBadRequest() {
         mockMvc.perform(get(STATS_URL)
                         .param("end", "2023-01-01 00:11:00"))
                 .andExpect(status().isBadRequest());
@@ -119,9 +119,9 @@ class StatisticControllerTest {
         verify(statisticService, never()).getStatistics(any(), any(), anyList(), any());
     }
 
-    @SneakyThrows
     @Test
-    public void getStatistic_WhenUniqueValueIsNotValid_thenReturnedBadRequest() {
+    @SneakyThrows
+    public void shouldGetStatisticWhenUniqueValueIsNotValidThenReturnedBadRequest() {
         String start = "2023-03-30 00:00:00";
         String end = "2024-03-00 00:00:00";
 
@@ -129,7 +129,7 @@ class StatisticControllerTest {
                         .param("start", start)
                         .param("end", end)
                         .param("uris", "/value, /value1")
-                        .param("unique", "ljdflJNDJ")
+                        .param("unique", "super value")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
