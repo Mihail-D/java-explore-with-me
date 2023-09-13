@@ -25,7 +25,7 @@ class HttpRequestClientTest {
 
     private HttpRequestClient httpRequestClient;
 
-    private final static Logger LOGGER = Logger.getLogger(HttpRequestClientTest.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HttpRequestClientTest.class.getName());
 
     @BeforeEach
     void setUp() {
