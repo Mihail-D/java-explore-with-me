@@ -100,7 +100,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ViewStats"
+                    "$ref": "#/components/schemas/RequestStatsView"
                   }
                 }
               }
@@ -144,7 +144,7 @@
           }
         }
       },
-      "ViewStats": {
+      "RequestStatsView": {
         "type": "object",
         "properties": {
           "app": {
