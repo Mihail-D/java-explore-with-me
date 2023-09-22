@@ -2,9 +2,10 @@ package ru.practicum;
 
 import org.junit.Test;
 
-import javax.validation.ConstraintViolationException;
+import javax.validation.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -69,63 +70,101 @@ public class RequestHitInfoDtoTest {
 
     @Test
     public void shouldExceptionThrownWhenCreatingRequestHitInfoDtoWithNullFields() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
         assertThrows(ConstraintViolationException.class, () -> {
-            RequestHitInfoDto.builder()
+            RequestHitInfoDto requestHitInfoDto = RequestHitInfoDto.builder()
                     .uri(null)
                     .ip("127.0.0.1")
                     .app("TestApp")
                     .timestamp(LocalDateTime.now())
                     .build();
+
+            Set<ConstraintViolation<RequestHitInfoDto>> violations = validator.validate(requestHitInfoDto);
+            if (!violations.isEmpty()) {
+                throw new ConstraintViolationException(violations);
+            }
         });
 
         assertThrows(ConstraintViolationException.class, () -> {
-            RequestHitInfoDto.builder()
+            RequestHitInfoDto requestHitInfoDto = RequestHitInfoDto.builder()
                     .uri("example.com")
                     .ip(null)
                     .app("TestApp")
                     .timestamp(LocalDateTime.now())
                     .build();
+
+            Set<ConstraintViolation<RequestHitInfoDto>> violations = validator.validate(requestHitInfoDto);
+            if (!violations.isEmpty()) {
+                throw new ConstraintViolationException(violations);
+            }
         });
 
         assertThrows(ConstraintViolationException.class, () -> {
-            RequestHitInfoDto.builder()
+            RequestHitInfoDto requestHitInfoDto = RequestHitInfoDto.builder()
                     .uri("example.com")
                     .ip("127.0.0.1")
                     .app(null)
                     .timestamp(LocalDateTime.now())
                     .build();
+
+            Set<ConstraintViolation<RequestHitInfoDto>> violations = validator.validate(requestHitInfoDto);
+            if (!violations.isEmpty()) {
+                throw new ConstraintViolationException(violations);
+            }
         });
     }
 
+
     @Test
     public void shouldExceptionThrownWhenCreatingRequestHitInfoDtoWithEmptyFields() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
         assertThrows(ConstraintViolationException.class, () -> {
-            RequestHitInfoDto.builder()
+            RequestHitInfoDto requestHitInfoDto = RequestHitInfoDto.builder()
                     .uri("")
                     .ip("127.0.0.1")
                     .app("TestApp")
                     .timestamp(LocalDateTime.now())
                     .build();
+
+            Set<ConstraintViolation<RequestHitInfoDto>> violations = validator.validate(requestHitInfoDto);
+            if (!violations.isEmpty()) {
+                throw new ConstraintViolationException(violations);
+            }
         });
 
         assertThrows(ConstraintViolationException.class, () -> {
-            RequestHitInfoDto.builder()
+            RequestHitInfoDto requestHitInfoDto = RequestHitInfoDto.builder()
                     .uri("example.com")
                     .ip("")
                     .app("TestApp")
                     .timestamp(LocalDateTime.now())
                     .build();
+
+            Set<ConstraintViolation<RequestHitInfoDto>> violations = validator.validate(requestHitInfoDto);
+            if (!violations.isEmpty()) {
+                throw new ConstraintViolationException(violations);
+            }
         });
 
         assertThrows(ConstraintViolationException.class, () -> {
-            RequestHitInfoDto.builder()
+            RequestHitInfoDto requestHitInfoDto = RequestHitInfoDto.builder()
                     .uri("example.com")
                     .ip("127.0.0.1")
                     .app("")
                     .timestamp(LocalDateTime.now())
                     .build();
+
+            Set<ConstraintViolation<RequestHitInfoDto>> violations = validator.validate(requestHitInfoDto);
+            if (!violations.isEmpty()) {
+                throw new ConstraintViolationException(violations);
+            }
         });
     }
+
 
     @Test
     public void shouldExceptionThrownWhenCreatingRequestHitInfoDtoWithInvalidTimestampFormat() {
