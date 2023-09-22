@@ -15,16 +15,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestHitEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column
-    private String uri;
-    @Column
-    private LocalDateTime timestamp;
-    @Column
-    private String ip;
+    //Идентификатор сервиса для которого записывается информация
     @Column
     private String app;
+    //URI для которого был осуществлен запрос
+    @Column
+    private String uri;
+    //IP-адрес пользователя, осуществившего запрос
+    @Column
+    private String ip;
+    //Дата и время, когда был совершен запрос к эндпоинту
+    @Column
+    private LocalDateTime timestamp;
+
 }

@@ -29,9 +29,9 @@ public class StatisticsQueryRepositoryTest {
         RequestStatsView statsView1 = new RequestStatsView("app1", "/test1", 10);
         RequestStatsView statsView2 = new RequestStatsView("app2", "/test2", 20);
 
-        when(statisticsQueryRepository.getViewStatsByDateRange(start, end)).thenReturn(Arrays.asList(statsView1, statsView2));
+        when(statisticsQueryRepository.findAllByDateBetween(start, end)).thenReturn(Arrays.asList(statsView1, statsView2));
 
-        List<RequestStatsView> result = statisticsQueryRepository.getViewStatsByDateRange(start, end);
+        List<RequestStatsView> result = statisticsQueryRepository.findAllByDateBetween(start, end);
 
         assertEquals(2, result.size());
         assertEquals("app1", result.get(0).getApp());
