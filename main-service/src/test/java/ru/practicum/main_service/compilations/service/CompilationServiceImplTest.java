@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class CompilationServiceImplTest {
 
     @Test
-    public void test_retrieve_all_compilations_no_filters() {
+    public void shouldTestRetrieveAllCompilationsNoFilters() {
         CompilationRepository compilationRepository = mock(CompilationRepository.class);
         EventRepository eventRepository = mock(EventRepository.class);
         CompilationService compilationService = new CompilationServiceImpl(compilationRepository, eventRepository);
@@ -46,7 +46,7 @@ public class CompilationServiceImplTest {
 
 
     @Test
-    public void test_create_new_compilation_no_events() {
+    public void shouldTestCreateNewCompilationNoEvents() {
         CompilationRepository compilationRepository = mock(CompilationRepository.class);
         EventRepository eventRepository = mock(EventRepository.class);
         CompilationService compilationService = new CompilationServiceImpl(compilationRepository, eventRepository);
@@ -64,7 +64,7 @@ public class CompilationServiceImplTest {
 
 
     @Test
-    public void test_create_new_compilation_invalid_event_ids() {
+    public void shouldTestCreateNewCompilationInvalidEventIds() {
         CompilationRepository compilationRepository = mock(CompilationRepository.class);
         EventRepository eventRepository = mock(EventRepository.class);
         CompilationService compilationService = new CompilationServiceImpl(compilationRepository, eventRepository);
@@ -81,5 +81,4 @@ public class CompilationServiceImplTest {
 
         assertNotNull(result);
     }
-
 }
