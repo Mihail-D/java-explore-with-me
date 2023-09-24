@@ -39,5 +39,4 @@ public class AdminCategoriesController {
         categoryDto.setId(catId);
         return categoriesService.updateCategories(categoryDto);
     }
-
 }

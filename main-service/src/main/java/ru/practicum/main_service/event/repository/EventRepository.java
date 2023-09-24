@@ -8,7 +8,6 @@ import ru.practicum.main_service.event.model.State;
 import java.util.List;
 import java.util.Optional;
 
-
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     Optional<Event> findByIdAndAndState(Long eventId, State state);
@@ -20,5 +19,4 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllByIdIn(List<Long> ids);
 
     boolean existsEventsByCategory_Id(Long catId);
-
 }

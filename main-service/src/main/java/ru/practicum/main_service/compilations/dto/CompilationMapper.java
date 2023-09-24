@@ -26,6 +26,5 @@ public class CompilationMapper {
                 .title(compilation.getTitle())
                 .events(events)
                 .build();
-
     }
 }
