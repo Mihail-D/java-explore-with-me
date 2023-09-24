@@ -18,24 +18,14 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class StatisticsProcessingServiceImpl implements StatisticsProcessingService {
+
     private final StatisticsQueryRepository statisticRepository;
 
-    /**
-     * Сохранение информации о том, что на uri конкретного сервиса был отправлен запрос пользователем.
-     * Название сервиса, uri и ip пользователя указаны в теле запроса.
-     */
     @Override
     public void postHit(RequestHitInfoDto hitRequestDto) {
         statisticRepository.save(StatsDtoModelMapper.toStats(hitRequestDto));
     }
 
-    /**
-     * start  - дата и время начала диапазона за который нужно выгрузить статистику
-     * end    - дата и время конца диапазона за который нужно выгрузить статистику
-     * список статистики по посещениям
-     * uris   - список uri для которых нужно выгрузить статистику
-     * unique - нужно ли учитывать только уникальные ip
-     */
     @Override
     public List<StatsResponseDto> getStatistics(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         List<RequestStatsView> viewStatsList;

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class HttpRequestClient {
+
     protected final RestTemplate rest;
 
     public HttpRequestClient(RestTemplate rest) {
@@ -119,4 +120,3 @@ public class HttpRequestClient {
         return headers;
     }
 }
-

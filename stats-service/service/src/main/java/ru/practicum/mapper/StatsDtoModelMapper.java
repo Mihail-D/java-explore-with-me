@@ -8,6 +8,7 @@ import ru.practicum.model.RequestStatsView;
 
 @UtilityClass
 public class StatsDtoModelMapper {
+
     public static RequestHitEntity toStats(RequestHitInfoDto endpointHitRequestDto) {
         return RequestHitEntity.builder()
                 .ip(endpointHitRequestDto.getIp())

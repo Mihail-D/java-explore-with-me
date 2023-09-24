@@ -36,5 +36,4 @@ public class StatisticsApiController {
                                                Boolean unique) {
         return statisticService.getStatistics(start, end, uris, unique);
     }
-
 }

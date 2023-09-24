@@ -22,9 +22,9 @@ import java.util.Map;
 @Slf4j
 @Service
 public class StatsServiceClient extends HttpRequestClient {
+
     private static final String API_PREFIX_HIT = "/hit";
     private static final String API_PREFIX_START = "/stats";
-
 
     @Autowired
     public StatsServiceClient(@Value("${stats-service.url}") String serverUrl, RestTemplateBuilder builder) {
@@ -40,8 +40,10 @@ public class StatsServiceClient extends HttpRequestClient {
         return post(API_PREFIX_HIT, hitRequestDto);
     }
 
-    public List<StatsResponseDto> getStatistic(LocalDateTime start, LocalDateTime end,
-                                               List<String> uris, Boolean unique) {
+    public List<StatsResponseDto> getStatistic(
+            LocalDateTime start, LocalDateTime end,
+            List<String> uris, Boolean unique
+    ) {
 
         Map<String, Object> parameters = new HashMap<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -54,10 +56,11 @@ public class StatsServiceClient extends HttpRequestClient {
         ResponseEntity<List<StatsResponseDto>> response = rest.exchange(API_PREFIX_START + query,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
-                }, parameters);
-        List<StatsResponseDto> result = response.getBody();
 
-        return result;
+                }, parameters
+        );
+
+        return response.getBody();
 
     }
 }
