@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 public class RequestStatsView {
 
-    private String uri;
     private String app;
+    private String uri;
     private long count;
 
     public RequestStatsView(String app, String uri, long hits) {

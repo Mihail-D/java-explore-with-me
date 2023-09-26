@@ -19,12 +19,16 @@ public class RequestHitEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column
-    private String uri;
-    @Column
-    private LocalDateTime timestamp;
-    @Column
-    private String ip;
+
     @Column
     private String app;
+
+    @Column
+    private String uri;
+
+    @Column
+    private String ip;
+
+    @Column
+    private LocalDateTime timestamp;
 }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.RequestHitInfoDto;
 import ru.practicum.StatsResponseDto;
+import ru.practicum.exception.ValidationException;
 import ru.practicum.mapper.StatsDtoModelMapper;
 import ru.practicum.model.RequestStatsView;
 import ru.practicum.repository.StatisticsQueryRepository;
@@ -30,19 +31,19 @@ public class StatisticsProcessingServiceImpl implements StatisticsProcessingServ
         List<RequestStatsView> viewStatsList;
 
         if (start.isAfter(end)) {
-            throw new IllegalArgumentException("The start time cannot be later than the end date of the range!");
+            throw new ValidationException("Время начала не может быть позднее даты конца диапазона!");
         }
         if (uris == null || uris.isEmpty()) {
             if (unique) {
-                viewStatsList = statisticRepository.getViewStatsByDateRangeWithUniqueIP(start, end);
+                viewStatsList = statisticRepository.findAllStatsByUniqIp(start, end);
             } else {
-                viewStatsList = statisticRepository.getViewStatsByDateRange(start, end);
+                viewStatsList = statisticRepository.findAllByDateBetween(start, end);
             }
         } else {
             if (unique) {
-                viewStatsList = statisticRepository.getViewStatsByDateRangeWithUniqueIP(start, end, uris);
+                viewStatsList = statisticRepository.findStatsByUrisByUniqIp(start, end, uris);
             } else {
-                viewStatsList = statisticRepository.getViewStatsByDateRange(start, end, uris);
+                viewStatsList = statisticRepository.findAllByDateBetween(start, end, uris);
             }
 
         }
