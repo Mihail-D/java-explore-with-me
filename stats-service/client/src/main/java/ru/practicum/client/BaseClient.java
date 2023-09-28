@@ -8,11 +8,10 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
-public class HttpRequestClient {
-
+public class BaseClient {
     protected final RestTemplate rest;
 
-    public HttpRequestClient(RestTemplate rest) {
+    public BaseClient(RestTemplate rest) {
         this.rest = rest;
     }
 
@@ -120,3 +119,4 @@ public class HttpRequestClient {
         return headers;
     }
 }
+

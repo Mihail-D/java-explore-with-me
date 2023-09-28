@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-import ru.practicum.RequestHitInfoDto;
+import ru.practicum.HitRequestDto;
 import ru.practicum.StatsResponseDto;
 
 import java.time.LocalDateTime;
@@ -21,13 +21,13 @@ import java.util.Map;
 
 @Slf4j
 @Service
-public class StatsServiceClient extends HttpRequestClient {
-
+public class StatsClient extends BaseClient {
     private static final String API_PREFIX_HIT = "/hit";
     private static final String API_PREFIX_START = "/stats";
 
+
     @Autowired
-    public StatsServiceClient(@Value("${stats-service.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatsClient(@Value("${stats-service.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
@@ -36,14 +36,12 @@ public class StatsServiceClient extends HttpRequestClient {
         );
     }
 
-    public ResponseEntity<Object> postEndpointHit(RequestHitInfoDto hitRequestDto) {
+    public ResponseEntity<Object> postEndpointHit(HitRequestDto hitRequestDto) {
         return post(API_PREFIX_HIT, hitRequestDto);
     }
 
-    public List<StatsResponseDto> getStatistic(
-            LocalDateTime start, LocalDateTime end,
-            List<String> uris, Boolean unique
-    ) {
+    public List<StatsResponseDto> getStatistic(LocalDateTime start, LocalDateTime end,
+                                               List<String> uris, Boolean unique) {
 
         Map<String, Object> parameters = new HashMap<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -56,11 +54,10 @@ public class StatsServiceClient extends HttpRequestClient {
         ResponseEntity<List<StatsResponseDto>> response = rest.exchange(API_PREFIX_START + query,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
+                }, parameters);
+        List<StatsResponseDto> result = response.getBody();
 
-                }, parameters
-        );
-
-        return response.getBody();
+        return result;
 
     }
 }

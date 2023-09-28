@@ -23,14 +23,14 @@ class HttpRequestClientTest {
     @Mock
     private RestTemplate restTemplate;
 
-    private HttpRequestClient httpRequestClient;
+    private BaseClient httpRequestClient;
 
     private static final Logger LOGGER = Logger.getLogger(HttpRequestClientTest.class.getName());
 
     @BeforeEach
     void setUp() {
         try (AutoCloseable ac = MockitoAnnotations.openMocks(this)) {
-            httpRequestClient = new HttpRequestClient(restTemplate);
+            httpRequestClient = new BaseClient(restTemplate);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception occur", e);
         }
