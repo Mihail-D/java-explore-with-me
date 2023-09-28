@@ -36,6 +36,7 @@ public class CompilationServiceImpl implements CompilationService {
         int offset = from > 0 ? from / size : 0;
         PageRequest page = PageRequest.of(offset, size);
         List<Compilation> compilations;
+
         if (pinned == null) {
             compilations = compilationsRepository.findAll(page).getContent();
         } else {
