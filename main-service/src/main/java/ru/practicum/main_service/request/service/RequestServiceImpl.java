@@ -31,12 +31,9 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<ParticipationRequestDto> getRequest(Long userId) {
-        if (userId == null) {
-            throw new NullPointerException("userId cannot be null");
-        }
         getUserById(userId);
         List<Request> requestsList = requestsRepository.findByRequesterId(userId);
-        log.info("GET request to search about the current user's applications, with id: {}", userId);
+        log.info("GET request to search about the current user's applications, with ids: {}", userId);
         return requestsList.stream().map(RequestMapper::toRequestDto).collect(Collectors.toList());
     }
 
@@ -68,7 +65,7 @@ public class RequestServiceImpl implements RequestService {
         } else {
             request.setStatus(ParticipationRequestStatus.PENDING);
         }
-        log.info("Create request to add a request from the current user to participate in an event, with id: {}", userId);
+        log.info("Create request to add a request from the current user to participate in an event, with ids: {}", userId);
 
         return RequestMapper.toRequestDto(requestsRepository.save(request));
     }
@@ -81,7 +78,7 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictException("You can only cancel your participation request");
         }
         request.setStatus(ParticipationRequestStatus.CANCELED);
-        log.info("PATH request to cancel your request to participate in the event, with id: {} {}", userId, requestId);
+        log.info("PATH request to cancel your request to participate in the event, with ids: {} {}", userId, requestId);
         return RequestMapper.toRequestDto(requestsRepository.save(request));
     }
 
