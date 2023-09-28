@@ -5,13 +5,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RequestStatsView {
+public class ViewStats {
 
+    //Название сервиса
     private String app;
+    //URI сервиса
     private String uri;
+    //hits - Количество просмотров
     private long count;
 
-    public RequestStatsView(String app, String uri, long hits) {
+    public ViewStats(String app, String uri, long hits) {
         this.app = app;
         this.uri = uri;
         this.count = hits;

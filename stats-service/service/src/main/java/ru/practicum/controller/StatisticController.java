@@ -5,9 +5,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.RequestHitInfoDto;
+import ru.practicum.HitRequestDto;
 import ru.practicum.StatsResponseDto;
-import ru.practicum.service.StatisticsProcessingService;
+import ru.practicum.service.StatisticService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,12 +16,12 @@ import java.util.List;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
-public class StatisticsApiController {
-    private final StatisticsProcessingService statisticService;
+public class StatisticController {
+    private final StatisticService statisticService;
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
-    public void postEndpointHit(@Validated @RequestBody RequestHitInfoDto hitRequestDto) {
+    public void postEndpointHit(@Validated @RequestBody HitRequestDto hitRequestDto) {
         statisticService.postHit(hitRequestDto);
     }
 
@@ -36,4 +36,5 @@ public class StatisticsApiController {
                                                Boolean unique) {
         return statisticService.getStatistics(start, end, uris, unique);
     }
+
 }

@@ -6,11 +6,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.practicum.RequestHitInfoDto;
+import ru.practicum.HitRequestDto;
 import ru.practicum.StatsResponseDto;
-import ru.practicum.model.RequestHitEntity;
-import ru.practicum.model.RequestStatsView;
-import ru.practicum.repository.StatisticsQueryRepository;
+import ru.practicum.model.StatsModel;
+import ru.practicum.model.ViewStats;
+import ru.practicum.repository.StatisticRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,15 +25,15 @@ import static org.mockito.Mockito.when;
 class StatisticServiceImplTest {
 
     @Mock
-    private StatisticsQueryRepository statisticRepository;
+    private StatisticRepository statisticRepository;
     @InjectMocks
-    StatisticsProcessingServiceImpl statisticService;
-    private RequestHitInfoDto hitRequestDto;
+    StatisticServiceImpl statisticService;
+    private HitRequestDto hitRequestDto;
 
     @BeforeEach
     void beforeEach() {
 
-        hitRequestDto = RequestHitInfoDto.builder()
+        hitRequestDto = HitRequestDto.builder()
                 .app("app")
                 .ip("ip")
                 .uri("uri")
@@ -44,7 +44,7 @@ class StatisticServiceImplTest {
     @Test
     void shouldPostHitWhenIsOk() {
         statisticService.postHit(hitRequestDto);
-        verify(statisticRepository).save(any(RequestHitEntity.class));
+        verify(statisticRepository).save(any(StatsModel.class));
 
     }
 
@@ -55,9 +55,9 @@ class StatisticServiceImplTest {
         List<String> uris = new ArrayList<>();
         Boolean unique = true;
 
-        List<RequestStatsView> viewStatsList = new ArrayList<>();
-        viewStatsList.add(new RequestStatsView("app1", "uri1", 1));
-        viewStatsList.add(new RequestStatsView("app2", "uri2", 2));
+        List<ViewStats> viewStatsList = new ArrayList<>();
+        viewStatsList.add(new ViewStats("app1", "uri1", 1));
+        viewStatsList.add(new ViewStats("app2", "uri2", 2));
 
         when(statisticRepository.findAllStatsByUniqIp(start, end)).thenReturn(viewStatsList);
 

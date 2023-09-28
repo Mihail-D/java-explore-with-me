@@ -13,10 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.practicum.RequestHitInfoDto;
 import ru.practicum.StatsResponseDto;
-import ru.practicum.controller.StatisticsApiController;
-import ru.practicum.service.StatisticsProcessingService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,12 +33,12 @@ class StatisticControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private StatisticsProcessingService statisticService;
+    private ru.practicum.service.StatisticService statisticService;
     @InjectMocks
-    StatisticsApiController statisticController;
+    ru.practicum.controller.StatisticController statisticController;
     private static final String HIT_URL = "/hit";
     private static final String STATS_URL = "/stats";
-    private RequestHitInfoDto hitRequestDto;
+    private ru.practicum.HitRequestDto hitRequestDto;
     private StatsResponseDto statsResponseDto;
 
     @BeforeEach
@@ -49,7 +46,7 @@ class StatisticControllerTest {
         String param = "2023-08-04 13:37:00";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime timestamp = LocalDateTime.parse(param, dateTimeFormatter);
-        hitRequestDto = RequestHitInfoDto.builder()
+        hitRequestDto = ru.practicum.HitRequestDto.builder()
                 .app("app")
                 .ip("ip")
                 .uri("uri")
