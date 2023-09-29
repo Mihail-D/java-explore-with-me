@@ -87,11 +87,18 @@ public class CategoriesServiceImplTest {
 
         CategoriesServiceImpl categoriesService = new CategoriesServiceImpl(categoriesRepository, eventRepository);
 
-        List<CategoryDto> result = categoriesService.getCategories(null, null);
+        Integer from = null;
+        Integer size = null;
+
+        from = 0;
+        size = 10;
+
+        List<CategoryDto> result = categoriesService.getCategories(from, size);
 
         assertEquals(1, result.size());
         assertEquals("Category 1", result.get(0).getName());
     }
+
 
     @Test
     public void shouldTestGetCategoriesIdCategoryNotFound() {
