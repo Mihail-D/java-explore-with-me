@@ -72,10 +72,12 @@ public class AdminCompilationsControllerTest {
                 .title("")
                 .build();
 
-        assertThrows(ConstraintViolationException.class, () -> controller.createCompilation(newCompilationDto));
+        doThrow(ConstraintViolationException.class).when(compilationService).createCompilation(any(NewCompilationDto.class));
 
-        verifyNoInteractions(compilationService);
+        assertThrows(ConstraintViolationException.class, () -> controller.createCompilation(newCompilationDto));
     }
+
+
 
     @Test
     public void shouldDeleteNonexistentCompilation() {

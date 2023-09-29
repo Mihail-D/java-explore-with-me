@@ -1,77 +1,62 @@
 package ru.practicum.main_service.compilations.controller;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
 import ru.practicum.main_service.compilations.dto.CompilationDto;
+import ru.practicum.main_service.compilations.repository.CompilationRepository;
 import ru.practicum.main_service.compilations.service.CompilationService;
+import ru.practicum.main_service.compilations.service.CompilationServiceImpl;
+import ru.practicum.main_service.event.repository.EventRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.Assert.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 public class PublicCompilationsControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    private CompilationService compilationsService;
+    private CompilationRepository compilationsRepository;
+    private EventRepository eventRepository;
 
-    @Test
-    public void shouldReturnOkStatusWhenGetAllCompilationsIsCalled() throws Exception {
-        this.mockMvc.perform(get("/compilations"))
-                .andExpect(status().isOk());
+    @Before
+    public void setup() {
+        compilationsRepository = Mockito.mock(CompilationRepository.class);
+        eventRepository = Mockito.mock(EventRepository.class);
+
+        compilationsService = new CompilationServiceImpl(compilationsRepository, eventRepository);
     }
 
     @Test
-    public void shouldReturnListOfCompilationDtoObjectsWhenValidParametersArePassed() {
-        CompilationService compilationService = mock(CompilationService.class);
-        List<CompilationDto> expectedCompilations = new ArrayList<>();
-        CompilationDto compilation1 = new CompilationDto();
-        CompilationDto compilation2 = new CompilationDto();
-        expectedCompilations.add(compilation1);
-        expectedCompilations.add(compilation2);
-        when(compilationService.getAllCompilations(anyBoolean(), anyInt(), anyInt())).thenReturn(expectedCompilations);
+    public void shouldGetAllCompilationsValidParameters() {
+        Boolean pinned = true;
+        Integer from = 0;
+        Integer size = 10;
 
-        PublicCompilationsController controller = new PublicCompilationsController(compilationService);
+        List<CompilationDto> result = compilationsService.getAllCompilations(pinned, from, size);
 
-        List<CompilationDto> actualCompilations = controller.getAllCompilations(true, 0, 10);
-
-        Assertions.assertEquals(expectedCompilations, actualCompilations);
+        assertNotNull(result);
+        assertEquals(0, result.size());
     }
 
     @Test
-    public void shouldReturnEmptyListWhenNoCompilationsAreFound() {
-        CompilationService compilationService = mock(CompilationService.class);
-        List<CompilationDto> expectedCompilations = new ArrayList<>();
-        when(compilationService.getAllCompilations(anyBoolean(), anyInt(), anyInt())).thenReturn(expectedCompilations);
+    public void shouldGetAllCompilationsNoPinnedCompilations() {
+        Boolean pinned = false;
+        Integer from = 0;
+        Integer size = 10;
 
-        PublicCompilationsController controller = new PublicCompilationsController(compilationService);
+        List<CompilationDto> result = compilationsService.getAllCompilations(pinned, from, size);
 
-        List<CompilationDto> actualCompilations = controller.getAllCompilations(null, 0, 10);
-
-        Assertions.assertEquals(expectedCompilations, actualCompilations);
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
 
     @Test
-    public void shouldReturnEmptyListWhenFromParameterIsGreaterThanNumberOfCompilations() {
-        CompilationService compilationService = mock(CompilationService.class);
-        List<CompilationDto> expectedCompilations = new ArrayList<>();
-        when(compilationService.getAllCompilations(anyBoolean(), anyInt(), anyInt())).thenReturn(expectedCompilations);
+    public void shouldGetCompilationsByIdInvalidId() {
+        Long compId = -1L;
 
-        PublicCompilationsController controller = new PublicCompilationsController(compilationService);
-
-        List<CompilationDto> actualCompilations = controller.getAllCompilations(null, 10, null);
-
-        Assertions.assertEquals(expectedCompilations, actualCompilations);
+        assertThrows(Exception.class, () -> compilationsService.getCompilationsById(compId));
     }
+
 }
+

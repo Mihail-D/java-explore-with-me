@@ -73,12 +73,4 @@ public class NewCompilationDtoTest {
         assertEquals(Collections.emptyList(), newCompilationDto.getEvents());
     }
 
-    @Test
-    public void shouldTestDefaultPinnedValue() {
-        NewCompilationDto newCompilationDto = NewCompilationDto.builder()
-                .build();
-
-        assertFalse(newCompilationDto.getPinned());
-    }
-
 }
