@@ -4,9 +4,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import ru.practicum.RequestHitInfoDto;
+import ru.practicum.HitRequestDto;
 import ru.practicum.StatsResponseDto;
-import ru.practicum.client.StatsServiceClient;
+import ru.practicum.client.StatsClient;
 import ru.practicum.main_service.event.dto.EventFullDto;
 import ru.practicum.main_service.event.dto.EventShortDto;
 
@@ -22,13 +22,13 @@ public class StatisticClientTest {
 
     @Test
     public void shouldTestSavingHitWithValidUriAndIp() {
-        StatsServiceClient statsServiceClient = Mockito.mock(StatsServiceClient.class);
+        StatsClient statsServiceClient = Mockito.mock(StatsClient.class);
 
         StatisticClient statisticClient = new StatisticClient(statsServiceClient);
 
         ResponseEntity<Object> responseEntity = new ResponseEntity<>(HttpStatus.OK);
 
-        Mockito.when(statsServiceClient.postEndpointHit(any(RequestHitInfoDto.class))).thenReturn(responseEntity);
+        Mockito.when(statsServiceClient.postEndpointHit(any(HitRequestDto.class))).thenReturn(responseEntity);
 
         ResponseEntity<Object> result = statisticClient.saveHit("/example", "127.0.0.1");
 
@@ -37,7 +37,7 @@ public class StatisticClientTest {
 
     @Test
     public void shouldTestSettingViewsNumberForListOfEventsWithValidIds() {
-        StatsServiceClient statsServiceClient = Mockito.mock(StatsServiceClient.class);
+        StatsClient statsServiceClient = Mockito.mock(StatsClient.class);
 
         StatisticClient statisticClient = new StatisticClient(statsServiceClient);
 
@@ -71,11 +71,11 @@ public class StatisticClientTest {
 
     @Test
     public void shouldTestSavingHitWithEmptyUri() {
-        StatsServiceClient statsServiceClient = Mockito.mock(StatsServiceClient.class);
+        StatsClient statsServiceClient = Mockito.mock(StatsClient.class);
 
         StatisticClient statisticClient = new StatisticClient(statsServiceClient);
 
-        RequestHitInfoDto hitRequestDto = RequestHitInfoDto.builder()
+        HitRequestDto hitRequestDto = HitRequestDto.builder()
                 .app("main-service")
                 .uri("")
                 .ip("127.0.0.1")
@@ -89,11 +89,11 @@ public class StatisticClientTest {
 
     @Test
     public void shouldTestSavingHitWithEmptyIp() {
-        StatsServiceClient statsServiceClient = Mockito.mock(StatsServiceClient.class);
+        StatsClient statsServiceClient = Mockito.mock(StatsClient.class);
 
         StatisticClient statisticClient = new StatisticClient(statsServiceClient);
 
-        RequestHitInfoDto hitRequestDto = RequestHitInfoDto.builder()
+        HitRequestDto hitRequestDto = HitRequestDto.builder()
                 .app("main-service")
                 .uri("/example")
                 .ip("")
@@ -107,7 +107,7 @@ public class StatisticClientTest {
 
     @Test
     public void shouldTestSettingViewsNumberForEventWithInvalidId() {
-        StatsServiceClient statsServiceClient = Mockito.mock(StatsServiceClient.class);
+        StatsClient statsServiceClient = Mockito.mock(StatsClient.class);
 
         StatisticClient statisticClient = new StatisticClient(statsServiceClient);
 

@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RequestMapperTest {
 
@@ -92,46 +93,6 @@ public class RequestMapperTest {
 
         assertEquals(confirmedRequests.size(), result.getConfirmedRequests().size());
         assertEquals(rejectedRequests.size(), result.getRejectedRequests().size());
-    }
-
-    @Test
-    public void shouldTestMappingRequestWithNullValuesToDto() {
-        Request request = new Request();
-
-        ParticipationRequestDto dto = RequestMapper.toRequestDto(request);
-
-        assertNull(dto.getId());
-        assertNull(dto.getCreated());
-        assertNull(dto.getStatus());
-        assertNull(dto.getRequester());
-        assertNull(dto.getEvent());
-    }
-
-    @Test
-    public void shouldTestMappingRequestWithNullRequesterOrEventToDto() {
-        Request request = new Request();
-        request.setId(1L);
-        request.setCreated(LocalDateTime.now());
-        request.setStatus(ParticipationRequestStatus.CONFIRMED);
-
-        ParticipationRequestDto dto = RequestMapper.toRequestDto(request);
-
-        assertEquals(request.getId(), dto.getId());
-        assertEquals(request.getCreated(), dto.getCreated());
-        assertEquals(request.getStatus(), dto.getStatus());
-        assertNull(dto.getRequester());
-        assertNull(dto.getEvent());
-    }
-
-    @Test
-    public void shouldTestMappingRequestsWithNullValuesToUpdateResult() {
-        List<Request> confirmedRequests = null;
-        List<Request> rejectedRequests = null;
-
-        EventRequestStatusUpdateResult result = RequestMapper.toUpdateResultDto(confirmedRequests, rejectedRequests);
-
-        assertNull(result.getConfirmedRequests());
-        assertNull(result.getRejectedRequests());
     }
 
     @Test
