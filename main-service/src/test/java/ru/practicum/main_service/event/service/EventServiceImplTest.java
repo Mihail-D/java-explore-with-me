@@ -6,7 +6,7 @@ import ru.practicum.main_service.StatisticClient;
 import ru.practicum.main_service.categories.repository.CategoriesRepository;
 import ru.practicum.main_service.event.repository.CustomBuiltEventRepository;
 import ru.practicum.main_service.event.repository.EventRepository;
-import ru.practicum.main_service.event.repository.LocationRepository;
+import ru.practicum.main_service.locations.LocationRepository;
 import ru.practicum.main_service.request.RequestRepository;
 import ru.practicum.main_service.users.repository.UserRepository;
 

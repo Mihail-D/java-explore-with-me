@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 public class AdminEventControllerGetEventsTest {
 
     @Test
-    public void test_behaviour_aaa() {
+    public void shouldGetAllEventsWithNullParameters() {
         EventService eventService = mock(EventService.class);
         AdminEventController adminEventController = new AdminEventController(eventService);
 
@@ -29,7 +29,7 @@ public class AdminEventControllerGetEventsTest {
     }
 
     @Test
-    public void test_behaviour_bbb() {
+    public void shouldGetAllEventsWithSpecificParameters() {
         EventService eventService = mock(EventService.class);
         AdminEventController adminEventController = new AdminEventController(eventService);
 
@@ -49,7 +49,7 @@ public class AdminEventControllerGetEventsTest {
     }
 
     @Test
-    public void test_behaviour_ccc() {
+    public void shouldGetAllEventsWithNullStatesAndRangeStart() {
         EventService eventService = mock(EventService.class);
         AdminEventController adminEventController = new AdminEventController(eventService);
 
@@ -69,7 +69,7 @@ public class AdminEventControllerGetEventsTest {
     }
 
     @Test
-    public void test_behaviour_ddd() {
+    public void shouldGetAllEventsWithPublishedState() {
         EventService eventService = mock(EventService.class);
         AdminEventController adminEventController = new AdminEventController(eventService);
 
@@ -89,7 +89,7 @@ public class AdminEventControllerGetEventsTest {
     }
 
     @Test
-    public void test_behaviour_eee() {
+    public void shouldGetAllEventsWithNullUsersStatesAndRanges() {
         EventService eventService = mock(EventService.class);
         AdminEventController adminEventController = new AdminEventController(eventService);
 
@@ -109,7 +109,7 @@ public class AdminEventControllerGetEventsTest {
     }
 
     @Test
-    public void test_behaviour_fff() {
+    public void shouldGetAllEventsWithNullUsersStatesCategoriesAndSpecificRange() {
         EventService eventService = mock(EventService.class);
         AdminEventController adminEventController = new AdminEventController(eventService);
 
