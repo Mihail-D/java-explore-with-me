@@ -2,6 +2,7 @@ package ru.practicum.main_service.request.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_service.event.model.Event;
 import ru.practicum.main_service.event.model.State;
@@ -41,16 +42,37 @@ public class RequestServiceImpl implements RequestService {
     public ParticipationRequestDto createRequest(Long userId, Long eventId) {
         User user = getUserById(userId);
         Event event = getEventsById(eventId);
+
+        if (user == null) {
+            try {
+                throw new ChangeSetPersister.NotFoundException();
+            } catch (ChangeSetPersister.NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if (event == null) {
+            try {
+                throw new ChangeSetPersister.NotFoundException();
+            } catch (ChangeSetPersister.NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         Long confirmedRequestAmount = requestsRepository.countAllByEventIdAndStatus(eventId, ParticipationRequestStatus.CONFIRMED);
+
         if (user.getId().equals(event.getInitiator().getId())) {
             throw new ConflictException("The event initiator cannot add a request to participate in his event");
         }
+
         if (!event.getState().equals(State.PUBLISHED)) {
             throw new ConflictException("You cannot participate in an unpublished event");
         }
+
         if (event.getParticipantLimit() != 0 && event.getParticipantLimit() <= confirmedRequestAmount) {
             throw new ConflictException("Limit of participation requests reached");
         }
+
         if (requestsRepository.existsRequestByRequester_IdAndEvent_Id(userId, eventId)) {
             throw new ConflictException("The event initiator cannot add a request to participate in his event");
         }
@@ -60,15 +82,18 @@ public class RequestServiceImpl implements RequestService {
                 .event(event)
                 .created(LocalDateTime.now())
                 .build();
+
         if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
             request.setStatus(ParticipationRequestStatus.CONFIRMED);
         } else {
             request.setStatus(ParticipationRequestStatus.PENDING);
         }
+
         log.info("Create request to add a request from the current user to participate in an event, with ids: {}", userId);
 
         return RequestMapper.toRequestDto(requestsRepository.save(request));
     }
+
 
     @Override
     public ParticipationRequestDto cancelRequest(Long userId, Long requestId) {
