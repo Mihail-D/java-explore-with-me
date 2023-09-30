@@ -12,7 +12,7 @@ public class StatsResponseDtoTest {
         String expectedApp = "TestApp";
         String expectedUri = "/test/uri";
 
-        StatsResponseDto statsResponseDto = StatsResponseDto.builder()
+        StatisticsResponseData statsResponseDto = StatisticsResponseData.builder()
                 .hits(expectedHits)
                 .app(expectedApp)
                 .uri(expectedUri)

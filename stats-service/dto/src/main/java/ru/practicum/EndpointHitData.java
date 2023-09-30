@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HitRequestDto {
+public class EndpointHitData {
     @NotBlank(message = "Название приложения не может быть пустым")
     private String app;
     @NotBlank(message = "URI не может быть пустым")
