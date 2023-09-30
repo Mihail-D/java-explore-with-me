@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
         } else {
             users = userRepository.findByIdIn(ids, page);
         }
-        log.info("Запрос GET на поиск пользователей, с ids: {}", ids);
+        log.info("GET request to search for users, with ids: {}", ids);
 
         return users.stream().map(UserMapper::toUserDto).collect(Collectors.toList());
     }
@@ -39,19 +39,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(NewUserRequestDto userRequestDto) {
         if (userRepository.existsUserByName(userRequestDto.getName())) {
-            throw new ConflictException("Такой пользователь уже есть");
+            throw new ConflictException("There is already such a user");
         }
         User user = UserMapper.toUser(userRequestDto);
-        log.info("Запрос POST на сохранение пользователя: {}", user.getName());
+        log.info("POST request to save user: {}", user.getName());
         return UserMapper.toUserDto(userRepository.save(user));
     }
 
     @Override
     public void deleteUser(Long userId) {
         if (!isUserExists(userId)) {
-            throw new ObjectNotFoundException("Пользователя не существует!");
+            throw new ObjectNotFoundException("User does not exist");
         }
-        log.info("Запрос DELETE на удаление пользователя: c id: {}", userId);
+        log.info("DELETE request to delete a user: c id: {}", userId);
         userRepository.deleteById(userId);
     }
 

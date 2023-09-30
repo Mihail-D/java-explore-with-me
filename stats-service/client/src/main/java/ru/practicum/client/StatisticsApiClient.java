@@ -55,9 +55,8 @@ public class StatisticsApiClient extends RestApiClient {
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 }, parameters);
-        List<StatisticsResponseData> result = response.getBody();
 
-        return result;
+        return response.getBody();
 
     }
 }
