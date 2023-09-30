@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-import ru.practicum.HitRequestDto;
-import ru.practicum.StatsResponseDto;
+import ru.practicum.EndpointHitData;
+import ru.practicum.StatisticsResponseData;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,13 +21,13 @@ import java.util.Map;
 
 @Slf4j
 @Service
-public class StatsClient extends BaseClient {
+public class StatisticsApiClient extends RestApiClient {
     private static final String API_PREFIX_HIT = "/hit";
     private static final String API_PREFIX_START = "/stats";
 
 
     @Autowired
-    public StatsClient(@Value("${stats-service.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatisticsApiClient(@Value("${stats-service.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
@@ -36,11 +36,11 @@ public class StatsClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> postEndpointHit(HitRequestDto hitRequestDto) {
+    public ResponseEntity<Object> postEndpointHit(EndpointHitData hitRequestDto) {
         return post(API_PREFIX_HIT, hitRequestDto);
     }
 
-    public List<StatsResponseDto> getStatistic(LocalDateTime start, LocalDateTime end,
+    public List<StatisticsResponseData> getStatistic(LocalDateTime start, LocalDateTime end,
                                                List<String> uris, Boolean unique) {
 
         Map<String, Object> parameters = new HashMap<>();
@@ -51,11 +51,11 @@ public class StatsClient extends BaseClient {
         parameters.put("unique", unique);
         var query = "?start={start}&end={end}&uris={uris}&unique={unique}";
         var view = get(API_PREFIX_START + query, parameters);
-        ResponseEntity<List<StatsResponseDto>> response = rest.exchange(API_PREFIX_START + query,
+        ResponseEntity<List<StatisticsResponseData>> response = rest.exchange(API_PREFIX_START + query,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 }, parameters);
-        List<StatsResponseDto> result = response.getBody();
+        List<StatisticsResponseData> result = response.getBody();
 
         return result;
 

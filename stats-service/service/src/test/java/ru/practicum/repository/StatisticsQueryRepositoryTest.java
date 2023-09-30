@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import ru.practicum.model.ViewStats;
+import ru.practicum.model.StatisticsViewData;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -19,19 +19,19 @@ import static org.mockito.Mockito.when;
 public class StatisticsQueryRepositoryTest {
 
     @Mock
-    private StatisticRepository statisticsQueryRepository;
+    private StatisticsDataRepository statisticsQueryRepository;
 
     @Test
     public void shouldTestGetViewStatsByDateRange() {
         LocalDateTime start = LocalDateTime.now().minusDays(1);
         LocalDateTime end = LocalDateTime.now();
 
-        ViewStats statsView1 = new ViewStats("app1", "/test1", 10);
-        ViewStats statsView2 = new ViewStats("app2", "/test2", 20);
+        StatisticsViewData statsView1 = new StatisticsViewData("app1", "/test1", 10);
+        StatisticsViewData statsView2 = new StatisticsViewData("app2", "/test2", 20);
 
         when(statisticsQueryRepository.findAllByDateBetween(start, end)).thenReturn(Arrays.asList(statsView1, statsView2));
 
-        List<ViewStats> result = statisticsQueryRepository.findAllByDateBetween(start, end);
+        List<StatisticsViewData> result = statisticsQueryRepository.findAllByDateBetween(start, end);
 
         assertEquals(2, result.size());
         assertEquals("app1", result.get(0).getApp());

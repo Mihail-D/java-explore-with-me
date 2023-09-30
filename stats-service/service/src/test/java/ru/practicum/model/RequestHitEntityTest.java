@@ -9,11 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RequestHitEntityTest {
 
-    private StatsModel requestHitEntity;
+    private StatisticsEntity requestHitEntity;
 
     @BeforeEach
     public void setUp() {
-        requestHitEntity = new StatsModel();
+        requestHitEntity = new StatisticsEntity();
     }
 
     @Test
