@@ -3,12 +3,12 @@ package ru.practicum.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.HitRequestDto;
-import ru.practicum.StatsResponseDto;
+import ru.practicum.EndpointHitData;
+import ru.practicum.StatisticsResponseData;
 import ru.practicum.exception.ValidationException;
-import ru.practicum.mapper.StatsMapper;
-import ru.practicum.model.ViewStats;
-import ru.practicum.repository.StatisticRepository;
+import ru.practicum.mapper.StatisticsDataMapper;
+import ru.practicum.model.StatisticsViewData;
+import ru.practicum.repository.StatisticsDataRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,16 +17,16 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class StatisticServiceImpl implements StatisticService {
-    private final StatisticRepository statisticRepository;
+public class StatisticsDataServiceImpl implements StatisticsDataService {
+    private final StatisticsDataRepository statisticRepository;
 
     /**
      * Сохранение информации о том, что на uri конкретного сервиса был отправлен запрос пользователем.
      * Название сервиса, uri и ip пользователя указаны в теле запроса.
      */
     @Override
-    public void postHit(HitRequestDto hitRequestDto) {
-        statisticRepository.save(StatsMapper.toStats(hitRequestDto));
+    public void postHit(EndpointHitData hitRequestDto) {
+        statisticRepository.save(StatisticsDataMapper.toStats(hitRequestDto));
     }
 
     /**
@@ -37,8 +37,8 @@ public class StatisticServiceImpl implements StatisticService {
      * unique - нужно ли учитывать только уникальные ip
      */
     @Override
-    public List<StatsResponseDto> getStatistics(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        List<ViewStats> viewStatsList;
+    public List<StatisticsResponseData> getStatistics(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
+        List<StatisticsViewData> viewStatsList;
 
         if (start.isAfter(end)) {
             throw new ValidationException("Время начала не может быть позднее даты конца диапазона!");
@@ -59,7 +59,7 @@ public class StatisticServiceImpl implements StatisticService {
         }
 
         return viewStatsList.stream()
-                .map(StatsMapper::toStatsResponseDto).collect(Collectors.toList());
+                .map(StatisticsDataMapper::toStatsResponseDto).collect(Collectors.toList());
 
     }
 }

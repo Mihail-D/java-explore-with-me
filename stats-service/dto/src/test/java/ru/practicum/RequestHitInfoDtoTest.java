@@ -13,7 +13,7 @@ public class RequestHitInfoDtoTest {
 
     @Test
     public void shouldCreateRequestHitInfoDtoWithValidParameters() {
-        HitRequestDto requestHitInfoDto = HitRequestDto.builder()
+        EndpointHitData requestHitInfoDto = EndpointHitData.builder()
                 .uri("example.com")
                 .ip("127.0.0.1")
                 .app("TestApp")
@@ -29,7 +29,7 @@ public class RequestHitInfoDtoTest {
 
     @Test
     public void shouldAccessAndModifyUriIpAndAppFields() {
-        HitRequestDto requestHitInfoDto = HitRequestDto.builder()
+        EndpointHitData requestHitInfoDto = EndpointHitData.builder()
                 .uri("example.com")
                 .ip("127.0.0.1")
                 .app("TestApp")
@@ -53,7 +53,7 @@ public class RequestHitInfoDtoTest {
     public void shouldAccessAndModifyTimestampField() {
         LocalDateTime timestamp = LocalDateTime.now();
 
-        HitRequestDto requestHitInfoDto = HitRequestDto.builder()
+        EndpointHitData requestHitInfoDto = EndpointHitData.builder()
                 .uri("example.com")
                 .ip("127.0.0.1")
                 .app("TestApp")
@@ -74,42 +74,42 @@ public class RequestHitInfoDtoTest {
         Validator validator = factory.getValidator();
 
         assertThrows(ConstraintViolationException.class, () -> {
-            HitRequestDto requestHitInfoDto = HitRequestDto.builder()
+            EndpointHitData requestHitInfoDto = EndpointHitData.builder()
                     .uri(null)
                     .ip("127.0.0.1")
                     .app("TestApp")
                     .timestamp(LocalDateTime.now())
                     .build();
 
-            Set<ConstraintViolation<HitRequestDto>> violations = validator.validate(requestHitInfoDto);
+            Set<ConstraintViolation<EndpointHitData>> violations = validator.validate(requestHitInfoDto);
             if (!violations.isEmpty()) {
                 throw new ConstraintViolationException(violations);
             }
         });
 
         assertThrows(ConstraintViolationException.class, () -> {
-            HitRequestDto requestHitInfoDto = HitRequestDto.builder()
+            EndpointHitData requestHitInfoDto = EndpointHitData.builder()
                     .uri("example.com")
                     .ip(null)
                     .app("TestApp")
                     .timestamp(LocalDateTime.now())
                     .build();
 
-            Set<ConstraintViolation<HitRequestDto>> violations = validator.validate(requestHitInfoDto);
+            Set<ConstraintViolation<EndpointHitData>> violations = validator.validate(requestHitInfoDto);
             if (!violations.isEmpty()) {
                 throw new ConstraintViolationException(violations);
             }
         });
 
         assertThrows(ConstraintViolationException.class, () -> {
-            HitRequestDto requestHitInfoDto = HitRequestDto.builder()
+            EndpointHitData requestHitInfoDto = EndpointHitData.builder()
                     .uri("example.com")
                     .ip("127.0.0.1")
                     .app(null)
                     .timestamp(LocalDateTime.now())
                     .build();
 
-            Set<ConstraintViolation<HitRequestDto>> violations = validator.validate(requestHitInfoDto);
+            Set<ConstraintViolation<EndpointHitData>> violations = validator.validate(requestHitInfoDto);
             if (!violations.isEmpty()) {
                 throw new ConstraintViolationException(violations);
             }
@@ -123,42 +123,42 @@ public class RequestHitInfoDtoTest {
         Validator validator = factory.getValidator();
 
         assertThrows(ConstraintViolationException.class, () -> {
-            HitRequestDto requestHitInfoDto = HitRequestDto.builder()
+            EndpointHitData requestHitInfoDto = EndpointHitData.builder()
                     .uri("")
                     .ip("127.0.0.1")
                     .app("TestApp")
                     .timestamp(LocalDateTime.now())
                     .build();
 
-            Set<ConstraintViolation<HitRequestDto>> violations = validator.validate(requestHitInfoDto);
+            Set<ConstraintViolation<EndpointHitData>> violations = validator.validate(requestHitInfoDto);
             if (!violations.isEmpty()) {
                 throw new ConstraintViolationException(violations);
             }
         });
 
         assertThrows(ConstraintViolationException.class, () -> {
-            HitRequestDto requestHitInfoDto = HitRequestDto.builder()
+            EndpointHitData requestHitInfoDto = EndpointHitData.builder()
                     .uri("example.com")
                     .ip("")
                     .app("TestApp")
                     .timestamp(LocalDateTime.now())
                     .build();
 
-            Set<ConstraintViolation<HitRequestDto>> violations = validator.validate(requestHitInfoDto);
+            Set<ConstraintViolation<EndpointHitData>> violations = validator.validate(requestHitInfoDto);
             if (!violations.isEmpty()) {
                 throw new ConstraintViolationException(violations);
             }
         });
 
         assertThrows(ConstraintViolationException.class, () -> {
-            HitRequestDto requestHitInfoDto = HitRequestDto.builder()
+            EndpointHitData requestHitInfoDto = EndpointHitData.builder()
                     .uri("example.com")
                     .ip("127.0.0.1")
                     .app("")
                     .timestamp(LocalDateTime.now())
                     .build();
 
-            Set<ConstraintViolation<HitRequestDto>> violations = validator.validate(requestHitInfoDto);
+            Set<ConstraintViolation<EndpointHitData>> violations = validator.validate(requestHitInfoDto);
             if (!violations.isEmpty()) {
                 throw new ConstraintViolationException(violations);
             }
@@ -169,7 +169,7 @@ public class RequestHitInfoDtoTest {
     @Test
     public void shouldExceptionThrownWhenCreatingRequestHitInfoDtoWithInvalidTimestampFormat() {
         assertThrows(DateTimeParseException.class, () -> {
-            HitRequestDto.builder()
+            EndpointHitData.builder()
                     .uri("example.com")
                     .ip("127.0.0.1")
                     .app("TestApp")
