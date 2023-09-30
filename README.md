@@ -1,4 +1,4 @@
-### _[Ссылка на pull request](https://github.com/MikeTheNuby/java-explore-with-me/pull/5)_
+### _[ссылка на pull request](https://github.com/MikeTheNuby/java-explore-with-me/pull/5)_
 
 # java-explore-with-me
 ### _Этап 1. Сервис статистики_
