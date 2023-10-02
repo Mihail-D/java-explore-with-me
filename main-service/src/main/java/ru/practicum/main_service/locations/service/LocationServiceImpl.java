@@ -42,13 +42,10 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public void deleteLocation(long id) {
-        var location = findLocationById(id);
-        if (location.getName() == null || location.getRadius() == null) {
-            throw new EntityNotFoundException("It is necessary to check the correctness of the location name and its radius");
-        }
         locationRepository.deleteById(id);
         log.info("DELETE request to delete a location, with id: {}", id);
     }
+
 
     @Override
     public LocationResponseDto updateLocation(long id, UpdateLocationDto updateLocationDto) {
