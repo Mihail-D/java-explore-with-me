@@ -331,26 +331,17 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventShortDto> getEventsListInLocation(Long locationId, Float lat, Float lon, Float radius, Pageable page) {
-        if (locationId == null && (lat == null || lon == null)) {
-            throw new IllegalArgumentException("Location or points must be specified");
-        }
-
-        List<Event> events;
-
-        if (locationId != null) {
-            Location location = locationRepository.findById(locationId)
-                    .orElseThrow(() -> new EntityNotFoundException("Location not found"));
-            events = eventRepository.findEventsWithLocationRadius(location.getLat(), location.getLon(), location.getRadius(), State.PUBLISHED, page);
-        } else {
-            events = eventRepository.findEventsWithLocationRadius(lat, lon, radius, State.PUBLISHED, page);
-        }
-
-        return events.stream().map(EventMapper::mapToShortDto).collect(Collectors.toList());
+    public List<EventShortDto> getEventsListInLocation(Long locationId, Float lat, Float lon, Float radius, Pageable pageable) {
+        return eventRepository.findEventsWithLocationRadius(
+                        lat,
+                        lon,
+                        radius,
+                        State.PUBLISHED,
+                        pageable
+                ).stream()
+                .map(EventMapper::mapToShortDto)
+                .collect(Collectors.toList());
     }
-
-
-
 
 
     private void updateEvents(Event event, UpdateEventRequestDto requestDto) {

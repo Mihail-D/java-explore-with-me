@@ -33,9 +33,4 @@ public interface EventService {
     EventFullDto adminUpdateEvent(Long eventId, UpdateEventRequestDto requestDto);
 
     List<EventShortDto> getEventsListInLocation(Long locationId, Float lat, Float lon, Float radius, Pageable page);
-
-/*    List<EventShortDto> getEventsListInLocation(
-            Long locationId, Float lat, Float lon,
-            Float radius, Integer from, Integer size
-    );*/
 }
