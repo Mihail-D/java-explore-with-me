@@ -12,7 +12,7 @@ import ru.practicum.main_service.categories.model.Categories;
 import ru.practicum.main_service.categories.repository.CategoriesRepository;
 import ru.practicum.main_service.event.repository.EventRepository;
 import ru.practicum.main_service.exception.ConflictException;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,6 +81,6 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     private Categories getCategoriesIfExist(Long catId) {
         return categoriesRepository.findById(catId).orElseThrow(
-                () -> new ObjectNotFoundException("Selected category not found"));
+                () -> new EntityNotFoundException("Selected category not found"));
     }
 }

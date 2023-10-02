@@ -5,19 +5,19 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
-public class ObjectNotFoundExceptionTest {
+public class EntityNotFoundExceptionTest {
 
     @Test
     public void shouldTestSetMessageProperty() {
         String message = "Test message";
-        ObjectNotFoundException exception = new ObjectNotFoundException(message);
+        EntityNotFoundException exception = new EntityNotFoundException(message);
         assertEquals(message, exception.getMessage());
     }
 
     @Test
     public void shouldTestGetMessage() {
         String message = "Test message";
-        ObjectNotFoundException exception = new ObjectNotFoundException(message);
+        EntityNotFoundException exception = new EntityNotFoundException(message);
         assertEquals(message, exception.getMessage());
     }
 
@@ -31,14 +31,14 @@ public class ObjectNotFoundExceptionTest {
     @Test
     public void shouldTestEmptyMessageParameter() {
         String expectedMessage = "";
-        ObjectNotFoundException exception = new ObjectNotFoundException("");
+        EntityNotFoundException exception = new EntityNotFoundException("");
         assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
     public void shouldTestSpecialCharactersMessageParameter() {
         String message = "Test message with special characters: !@#$%^&*()";
-        ObjectNotFoundException exception = new ObjectNotFoundException(message);
+        EntityNotFoundException exception = new EntityNotFoundException(message);
         assertEquals(message, exception.getMessage());
     }
 }

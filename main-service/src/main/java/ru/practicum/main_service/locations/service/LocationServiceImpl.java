@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_service.exception.ConflictException;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 import ru.practicum.main_service.locations.LocationRepository;
 import ru.practicum.main_service.locations.dto.LocationMapper;
 import ru.practicum.main_service.locations.dto.LocationResponseDto;
@@ -44,7 +44,7 @@ public class LocationServiceImpl implements LocationService {
     public void deleteLocation(long id) {
         var location = findLocationById(id);
         if (location.getName() == null || location.getRadius() == null) {
-            throw new ObjectNotFoundException("It is necessary to check the correctness of the location name and its radius");
+            throw new EntityNotFoundException("It is necessary to check the correctness of the location name and its radius");
         }
         locationRepository.deleteById(id);
         log.info("DELETE request to delete a location, with id: {}", id);
@@ -101,6 +101,6 @@ public class LocationServiceImpl implements LocationService {
 
     private Location findLocationById(long id) {
         return locationRepository.findById(id).orElseThrow(
-                () -> new ObjectNotFoundException("This location does not exist"));
+                () -> new EntityNotFoundException("This location does not exist"));
     }
 }

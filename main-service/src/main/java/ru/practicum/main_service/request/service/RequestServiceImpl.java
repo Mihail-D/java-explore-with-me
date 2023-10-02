@@ -7,7 +7,7 @@ import ru.practicum.main_service.event.model.Event;
 import ru.practicum.main_service.event.model.State;
 import ru.practicum.main_service.event.repository.EventRepository;
 import ru.practicum.main_service.exception.ConflictException;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 import ru.practicum.main_service.request.RequestRepository;
 import ru.practicum.main_service.request.dto.ParticipationRequestDto;
 import ru.practicum.main_service.request.dto.RequestMapper;
@@ -99,17 +99,17 @@ public class RequestServiceImpl implements RequestService {
 
     public User getUserById(Long userid) {
         return userRepository.findById(userid).orElseThrow(
-                () -> new ObjectNotFoundException("User id not found"));
+                () -> new EntityNotFoundException("User id not found"));
 
     }
 
     public Event getEventsById(Long eventId) {
         return eventRepository.findById(eventId).orElseThrow(
-                () -> new ObjectNotFoundException("Event not found by id"));
+                () -> new EntityNotFoundException("Event not found by id"));
     }
 
     public Request getRequestById(Long requestId) {
         return requestsRepository.findById(requestId).orElseThrow(
-                () -> new ObjectNotFoundException("Request by id not found"));
+                () -> new EntityNotFoundException("Request by id not found"));
     }
 }

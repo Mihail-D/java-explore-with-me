@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_service.exception.ConflictException;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 import ru.practicum.main_service.users.dto.NewUserRequestDto;
 import ru.practicum.main_service.users.dto.UserDto;
 import ru.practicum.main_service.users.dto.UserMapper;
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
         if (!isUserExists(userId)) {
-            throw new ObjectNotFoundException("User does not exist");
+            throw new EntityNotFoundException("User does not exist");
         }
         log.info("DELETE request to delete a user: c id: {}", userId);
         userRepository.deleteById(userId);

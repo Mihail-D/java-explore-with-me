@@ -17,7 +17,7 @@ import ru.practicum.main_service.event.model.State;
 import ru.practicum.main_service.event.repository.CustomBuiltEventRepository;
 import ru.practicum.main_service.event.repository.EventRepository;
 import ru.practicum.main_service.exception.ConflictException;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 import ru.practicum.main_service.locations.LocationRepository;
 import ru.practicum.main_service.locations.dto.LocationDto;
 import ru.practicum.main_service.locations.model.Location;
@@ -112,7 +112,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto getEventById(Long eventId, HttpServletRequest request) {
         Event event = eventRepository.findByIdAndAndState(eventId, State.PUBLISHED)
-                .orElseThrow(() -> new ObjectNotFoundException("Published event not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Published event not found"));
         String ip = request.getRemoteAddr();
         EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
         statsClient.saveHit("/events/" + eventId, ip);
@@ -156,7 +156,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto getEventsByUserId(Long userId, Long eventId) {
         Event event = eventRepository.findByInitiatorIdAndId(userId, eventId).orElseThrow(
-                () -> new ObjectNotFoundException("Event not found for user"));
+                () -> new EntityNotFoundException("Event not found for user"));
         return EventMapper.toEventFullDto(event);
     }
 
@@ -338,7 +338,7 @@ public class EventServiceImpl implements EventService {
 
         if (locationId != null) {
             Location location = locationRepository.findById(locationId).orElseThrow(
-                    () -> new ObjectNotFoundException("Location not found"));
+                    () -> new EntityNotFoundException("Location not found"));
             events = eventRepository.findEventsWithLocationRadius(
                     location.getLat(),
                     location.getLon(),
@@ -348,7 +348,7 @@ public class EventServiceImpl implements EventService {
             );
         } else {
             if (lat == null || lon == null) {
-                throw new ObjectNotFoundException("Points not specified");
+                throw new EntityNotFoundException("Points not specified");
             } else {
                 events = eventRepository.findEventsWithLocationRadius(
                         lat, lon, radius, State.PUBLISHED, page);
@@ -409,16 +409,16 @@ public class EventServiceImpl implements EventService {
 
     private User getUser(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new ObjectNotFoundException("This user does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("This user does not exist"));
     }
 
     private Event getEvents(Long eventId) {
         return eventRepository.findById(eventId)
-                .orElseThrow(() -> new ObjectNotFoundException("No such event exists"));
+                .orElseThrow(() -> new EntityNotFoundException("No such event exists"));
     }
 
     public Categories getCategoriesIfExist(Long catId) {
         return categoriesRepository.findById(catId).orElseThrow(
-                () -> new ObjectNotFoundException("Selected category not found"));
+                () -> new EntityNotFoundException("Selected category not found"));
     }
 }

@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import ru.practicum.main_service.event.model.Event;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 import ru.practicum.main_service.request.RequestRepository;
 import ru.practicum.main_service.request.dto.ParticipationRequestDto;
 import ru.practicum.main_service.request.model.ParticipationRequestStatus;
@@ -55,7 +55,7 @@ public class RequestServiceTest {
         Long userId = 1L;
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        assertThrows(ObjectNotFoundException.class, () -> requestService.getRequest(userId));
+        assertThrows(EntityNotFoundException.class, () -> requestService.getRequest(userId));
     }
 
     @Test
