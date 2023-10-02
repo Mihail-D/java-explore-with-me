@@ -44,7 +44,7 @@ public class LocationServiceImpl implements LocationService {
     public void deleteLocation(long id) {
         var location = findLocationById(id);
         if (location.getName() == null || location.getRadius() == null) {
-            throw new ObjectNotFoundException("This location was not found");
+            throw new ObjectNotFoundException("It is necessary to check the correctness of the location name and its radius");
         }
         locationRepository.deleteById(id);
         log.info("DELETE request to delete a location, with id: {}", id);
