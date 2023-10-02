@@ -348,15 +348,15 @@ public class EventServiceImpl implements EventService {
             );
         } else {
             if (lat == null || lon == null) {
-                throw new EntityNotFoundException("Points not specified");
+                throw new IllegalArgumentException("Points not specified");
             } else {
                 events = eventRepository.findEventsWithLocationRadius(
                         lat, lon, radius, State.PUBLISHED, page);
             }
         }
         return events.stream().map(EventMapper::mapToShortDto).collect(Collectors.toList());
-
     }
+
 
     private void updateEvents(Event event, UpdateEventRequestDto requestDto) {
         if (requestDto.getAnnotation() != null) {
