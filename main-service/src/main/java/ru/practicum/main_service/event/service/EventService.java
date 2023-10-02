@@ -1,5 +1,6 @@
 package ru.practicum.main_service.event.service;
 
+import org.springframework.data.domain.Pageable;
 import ru.practicum.main_service.event.dto.*;
 import ru.practicum.main_service.event.model.SortEvents;
 import ru.practicum.main_service.event.model.State;
@@ -31,8 +32,10 @@ public interface EventService {
 
     EventFullDto adminUpdateEvent(Long eventId, UpdateEventRequestDto requestDto);
 
-    List<EventShortDto> getEventsListInLocation(
+    List<EventShortDto> getEventsListInLocation(Long locationId, Float lat, Float lon, Float radius, Pageable page);
+
+/*    List<EventShortDto> getEventsListInLocation(
             Long locationId, Float lat, Float lon,
             Float radius, Integer from, Integer size
-    );
+    );*/
 }

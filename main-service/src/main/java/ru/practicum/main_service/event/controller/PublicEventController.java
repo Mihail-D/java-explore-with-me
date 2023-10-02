@@ -2,6 +2,9 @@ package ru.practicum.main_service.event.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main_service.event.dto.EventFullDto;
@@ -75,7 +78,8 @@ public class PublicEventController {
             @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
             @RequestParam(defaultValue = "10") @Positive Integer size
     ) {
-        return eventService.getEventsListInLocation(
-                locationId, lat, lon, radius, from, size);
+        Pageable page = PageRequest.of(from / size, size, Sort.by("eventDate").descending());
+        return eventService.getEventsListInLocation(locationId, lat, lon, radius, page);
     }
+
 }
