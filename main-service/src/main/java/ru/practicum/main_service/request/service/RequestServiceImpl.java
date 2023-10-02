@@ -2,7 +2,6 @@ package ru.practicum.main_service.request.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_service.event.model.Event;
 import ru.practicum.main_service.event.model.State;
@@ -44,19 +43,11 @@ public class RequestServiceImpl implements RequestService {
         Event event = getEventsById(eventId);
 
         if (user == null) {
-            try {
-                throw new ChangeSetPersister.NotFoundException();
-            } catch (ChangeSetPersister.NotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            throw new RuntimeException("User not found");
         }
 
         if (event == null) {
-            try {
-                throw new ChangeSetPersister.NotFoundException();
-            } catch (ChangeSetPersister.NotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            throw new RuntimeException("Event not found");
         }
 
         Long confirmedRequestAmount = requestsRepository.countAllByEventIdAndStatus(eventId, ParticipationRequestStatus.CONFIRMED);
@@ -69,7 +60,7 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictException("You cannot participate in an unpublished event");
         }
 
-        if (event.getParticipantLimit() != 0 && event.getParticipantLimit() <= confirmedRequestAmount) {
+        if (event.getParticipantLimit() != null && event.getParticipantLimit() != 0 && event.getParticipantLimit() <= confirmedRequestAmount) {
             throw new ConflictException("Limit of participation requests reached");
         }
 
@@ -83,7 +74,7 @@ public class RequestServiceImpl implements RequestService {
                 .created(LocalDateTime.now())
                 .build();
 
-        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
+        if ((event.getRequestModeration() == null || !event.getRequestModeration()) || (event.getParticipantLimit() == null || event.getParticipantLimit() == 0)) {
             request.setStatus(ParticipationRequestStatus.CONFIRMED);
         } else {
             request.setStatus(ParticipationRequestStatus.PENDING);
@@ -93,7 +84,6 @@ public class RequestServiceImpl implements RequestService {
 
         return RequestMapper.toRequestDto(requestsRepository.save(request));
     }
-
 
     @Override
     public ParticipationRequestDto cancelRequest(Long userId, Long requestId) {
