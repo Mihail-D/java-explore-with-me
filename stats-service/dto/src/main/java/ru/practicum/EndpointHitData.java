@@ -14,15 +14,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RequestHitInfoDto {
-
-    @NotBlank(message = "Название приложения не может быть пустым")
+public class EndpointHitData {
+    @NotBlank(message = "Application name cannot be empty")
     private String app;
-    @NotBlank(message = "URI не может быть пустым")
+    @NotBlank(message = "URI cannot be empty")
     private String uri;
-    @NotBlank(message = "IP пользователя не может быть пустым")
+    @NotBlank(message = "User IP cannot be empty")
     private String ip;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @NotNull(message = "Время отправления запроса не может быть пустым")
+    @NotNull(message = "Request time cannot be empty")
     private LocalDateTime timestamp;
 }

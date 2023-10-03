@@ -19,6 +19,7 @@ import static ru.practicum.main_service.event.model.State.PUBLISHED;
 @Repository
 @AllArgsConstructor
 public class CustomBuiltEventRepository {
+
     private final EntityManager entityManager;
 
     public List<Event> getEvents(Criteria criteria) {

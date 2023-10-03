@@ -2,6 +2,10 @@ package ru.practicum.main_service.event.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main_service.event.dto.EventFullDto;
 import ru.practicum.main_service.event.dto.EventShortDto;
@@ -10,10 +14,13 @@ import ru.practicum.main_service.event.service.EventService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Validated
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -61,4 +68,18 @@ public class PublicEventController {
 
         return eventService.getEventById(id, request);
     }
+
+    @GetMapping("/locations")
+    public List<EventShortDto> getEventsListInLocation(
+            @RequestParam(required = false) @Positive Long locationId,
+            @RequestParam(required = false) Float lat,
+            @RequestParam(required = false) Float lon,
+            @RequestParam(defaultValue = "0.0") Float radius,
+            @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+            @RequestParam(defaultValue = "10") @Positive Integer size
+    ) {
+        Pageable page = PageRequest.of(from / size, size, Sort.by("eventDate").descending());
+        return eventService.getEventsListInLocation(locationId, lat, lon, radius, page);
+    }
+
 }

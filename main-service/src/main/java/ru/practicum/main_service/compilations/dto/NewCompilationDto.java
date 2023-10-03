@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class NewCompilationDto {
 
-    @Builder.Default
     private Boolean pinned = false;
     @NotBlank
     @Size(min = 1, max = 50)

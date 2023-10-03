@@ -3,9 +3,9 @@ package ru.practicum.main_service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import ru.practicum.RequestHitInfoDto;
-import ru.practicum.StatsResponseDto;
-import ru.practicum.client.StatsServiceClient;
+import ru.practicum.EndpointHitData;
+import ru.practicum.StatisticsResponseData;
+import ru.practicum.client.StatisticsApiClient;
 import ru.practicum.main_service.event.dto.EventFullDto;
 import ru.practicum.main_service.event.dto.EventShortDto;
 
@@ -18,13 +18,12 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class StatisticClient {
-
     private static final String APP = "main-service";
     private static final int YEARS_OFFSET = 100;
-    private final StatsServiceClient statsClient;
+    private final StatisticsApiClient statsClient;
 
     public ResponseEntity<Object> saveHit(String uri, String ip) {
-        RequestHitInfoDto hitRequestDto = RequestHitInfoDto.builder()
+        EndpointHitData hitRequestDto = EndpointHitData.builder()
                 .app(APP)
                 .uri(uri)
                 .ip(ip)
@@ -34,9 +33,8 @@ public class StatisticClient {
     }
 
     public EventFullDto setViewsNumber(EventFullDto event) {
-        List<StatsResponseDto> hits = statsClient.getStatistic(event.getCreatedOn(), LocalDateTime.now(),
-                List.of("/events/" + event.getId()), true
-        );
+        List<StatisticsResponseData> hits = statsClient.getStatistic(event.getCreatedOn(), LocalDateTime.now(),
+                List.of("/events/" + event.getId()), true);
         if (!hits.isEmpty()) {
             event.setViews(hits.get(0).getHits());
         } else {
@@ -51,9 +49,8 @@ public class StatisticClient {
             uris.add("/events/" + eventShortDto.getId());
         }
 
-        List<StatsResponseDto> hits = statsClient.getStatistic(LocalDateTime.now().minusYears(YEARS_OFFSET),
-                LocalDateTime.now(), uris, true
-        );
+        List<StatisticsResponseData> hits = statsClient.getStatistic(LocalDateTime.now().minusYears(YEARS_OFFSET),
+                LocalDateTime.now(), uris, true);
         if (!hits.isEmpty()) {
             Map<Long, Integer> hitMap = mapHits(hits);
             for (EventShortDto event : events) {
@@ -67,7 +64,7 @@ public class StatisticClient {
         return events;
     }
 
-    private Map<Long, Integer> mapHits(List<StatsResponseDto> hits) {
+    private Map<Long, Integer> mapHits(List<StatisticsResponseData> hits) {
         Map<Long, Integer> hitMap = new HashMap<>();
         for (var hit : hits) {
             String hitUri = hit.getUri();

@@ -5,14 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_service.exception.ConflictException;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 import ru.practicum.main_service.users.dto.NewUserRequestDto;
 import ru.practicum.main_service.users.dto.UserDto;
 import ru.practicum.main_service.users.dto.UserMapper;
 import ru.practicum.main_service.users.model.User;
 import ru.practicum.main_service.users.repository.UserRepository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,14 +19,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
 
     @Override
     public List<UserDto> getUsers(List<Long> ids, Integer from, Integer size) {
-        if (from < 0 || size <= 0) {
-            return Collections.emptyList();
-        }
         int offset = from > 0 ? from / size : 0;
         PageRequest page = PageRequest.of(offset, size);
         List<User> users;
@@ -36,7 +31,7 @@ public class UserServiceImpl implements UserService {
         } else {
             users = userRepository.findByIdIn(ids, page);
         }
-        log.info("GET request to search for users, with id: {}", ids);
+        log.info("GET request to search for users, with ids: {}", ids);
 
         return users.stream().map(UserMapper::toUserDto).collect(Collectors.toList());
     }
@@ -54,7 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
         if (!isUserExists(userId)) {
-            throw new ObjectNotFoundException("User does not exist");
+            throw new EntityNotFoundException("User does not exist");
         }
         log.info("DELETE request to delete a user: c id: {}", userId);
         userRepository.deleteById(userId);
@@ -62,6 +57,7 @@ public class UserServiceImpl implements UserService {
 
     public boolean isUserExists(Long userId) {
         var userOptional = userRepository.findById(userId);
-        return userOptional.isPresent();
+        return !userOptional.isEmpty();
     }
+
 }

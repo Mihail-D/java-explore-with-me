@@ -3,6 +3,7 @@ package ru.practicum.main_service.event.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_service.StatisticClient;
 import ru.practicum.main_service.categories.model.Categories;
@@ -10,14 +11,15 @@ import ru.practicum.main_service.categories.repository.CategoriesRepository;
 import ru.practicum.main_service.event.dto.*;
 import ru.practicum.main_service.event.dto.mapper.EventMapper;
 import ru.practicum.main_service.event.model.Event;
-import ru.practicum.main_service.event.model.Location;
 import ru.practicum.main_service.event.model.SortEvents;
 import ru.practicum.main_service.event.model.State;
 import ru.practicum.main_service.event.repository.CustomBuiltEventRepository;
 import ru.practicum.main_service.event.repository.EventRepository;
-import ru.practicum.main_service.event.repository.LocationRepository;
 import ru.practicum.main_service.exception.ConflictException;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
+import ru.practicum.main_service.locations.LocationRepository;
+import ru.practicum.main_service.locations.dto.LocationDto;
+import ru.practicum.main_service.locations.model.Location;
 import ru.practicum.main_service.request.RequestRepository;
 import ru.practicum.main_service.request.dto.ParticipationRequestDto;
 import ru.practicum.main_service.request.dto.RequestMapper;
@@ -59,7 +61,7 @@ public class EventServiceImpl implements EventService {
 
         if (rangeStart != null && rangeEnd != null) {
             if (rangeStart.isAfter(rangeEnd)) {
-                throw new ValidationException(String.format("Start date %s is later than end date %s", rangeStart, rangeEnd));
+                throw new ValidationException(String.format("Start date %s is later than end date %s.", rangeStart, rangeEnd));
             }
         }
 
@@ -109,7 +111,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto getEventById(Long eventId, HttpServletRequest request) {
         Event event = eventRepository.findByIdAndAndState(eventId, State.PUBLISHED)
-                .orElseThrow(() -> new ObjectNotFoundException("Published event not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Published event not found"));
         String ip = request.getRemoteAddr();
         EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
         statsClient.saveHit("/events/" + eventId, ip);
@@ -141,7 +143,6 @@ public class EventServiceImpl implements EventService {
         }
         User user = getUser(userId);
         Location location = getLocation(newEventDto.getLocation());
-        locationRepository.save(location);
         Categories categories = getCategoriesIfExist(newEventDto.getCategory());
         Event event = EventMapper.toEvent(newEventDto, categories, location, user);
         event.setConfirmedRequests(0L);
@@ -154,7 +155,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto getEventsByUserId(Long userId, Long eventId) {
         Event event = eventRepository.findByInitiatorIdAndId(userId, eventId).orElseThrow(
-                () -> new ObjectNotFoundException("Event not found for user"));
+                () -> new EntityNotFoundException("Event not found for user"));
         return EventMapper.toEventFullDto(event);
     }
 
@@ -163,7 +164,7 @@ public class EventServiceImpl implements EventService {
 
         Event event = getEvents(eventId);
         if (event.getState().equals(State.PUBLISHED)) {
-            throw new ConflictException("You can only change canceled events or events pending moderation");
+            throw new ConflictException("Only canceled events or events pending moderation can be changed");
         }
         updateEvents(event, requestDto);
 
@@ -329,6 +330,25 @@ public class EventServiceImpl implements EventService {
         return eventFullDto;
     }
 
+    @Override
+    public List<EventShortDto> getEventsListInLocation(Long locationId, Float lat, Float lon, Float radius, Pageable pageable) {
+        if (locationId != null) {
+            Location location = locationRepository.findById(locationId)
+                    .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+
+            return eventRepository.findEventsWithLocationRadius(location.getLat(), location.getLon(), location.getRadius(), State.PUBLISHED, pageable)
+                    .stream()
+                    .map(EventMapper::mapToShortDto)
+                    .collect(Collectors.toList());
+        } else {
+            return eventRepository.findEventsWithLocationRadius(lat, lon, radius, State.PUBLISHED, pageable)
+                    .stream()
+                    .map(EventMapper::mapToShortDto)
+                    .collect(Collectors.toList());
+        }
+    }
+
+
     private void updateEvents(Event event, UpdateEventRequestDto requestDto) {
         if (requestDto.getAnnotation() != null) {
             event.setAnnotation(requestDto.getAnnotation());
@@ -359,11 +379,12 @@ public class EventServiceImpl implements EventService {
         if (requestDto.getTitle() != null) {
             event.setTitle(requestDto.getTitle());
         }
-
     }
 
     private Location getLocation(LocationDto locationDto) {
-        Optional<Location> location = locationRepository.findByLatAndLon(locationDto.getLat(), locationDto.getLon());
+
+        Optional<Location> location = locationRepository.findByLatAndLonAndNameNull(
+                locationDto.getLat(), locationDto.getLon());
 
         Location savedLocation;
         if (location.isPresent()) {
@@ -379,16 +400,16 @@ public class EventServiceImpl implements EventService {
 
     private User getUser(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new ObjectNotFoundException("This user does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("This user does not exist"));
     }
 
     private Event getEvents(Long eventId) {
         return eventRepository.findById(eventId)
-                .orElseThrow(() -> new ObjectNotFoundException("Such an event does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("No such event exists"));
     }
 
     public Categories getCategoriesIfExist(Long catId) {
         return categoriesRepository.findById(catId).orElseThrow(
-                () -> new ObjectNotFoundException("Selected category not found"));
+                () -> new EntityNotFoundException("Selected category not found"));
     }
 }

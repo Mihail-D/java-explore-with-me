@@ -6,7 +6,7 @@ import ru.practicum.main_service.categories.model.Categories;
 @UtilityClass
 public class CategoriesMapper {
 
-    public static CategoryDto toCategoryDto(Categories categories) {
+    public CategoryDto toCategoryDto(Categories categories) {
         if (categories == null) {
             return CategoryDto.builder()
                     .id(null)
@@ -19,7 +19,7 @@ public class CategoriesMapper {
                 .build();
     }
 
-    public static Categories toCategories(NewCategoryDto newCategoryDto) {
+    public Categories toCategories(NewCategoryDto newCategoryDto) {
         if (newCategoryDto == null) {
             return Categories.builder()
                     .name(null)

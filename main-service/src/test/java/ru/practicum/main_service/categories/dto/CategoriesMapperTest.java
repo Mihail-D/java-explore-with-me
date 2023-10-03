@@ -21,7 +21,7 @@ public class CategoriesMapperTest {
     }
 
     @Test
-    public void test_toCategories_returnsCorrectCategories() {
+    public void shouldToCategoriesReturnsCorrectCategories() {
         NewCategoryDto newCategoryDto = NewCategoryDto.builder()
                 .name("Test Category")
                 .build();
@@ -36,7 +36,7 @@ public class CategoriesMapperTest {
     }
 
     @Test
-    public void test_toCategoryDto_returnsCategoryDtoWithNullFields_whenGivenNullCategories() {
+    public void shouldToCategoryDtoReturnsCategoryDtoWithNullFieldsWhenGivenNullCategories() {
         Categories categories = null;
         CategoryDto expected = CategoryDto.builder()
                 .id(null)
@@ -49,7 +49,7 @@ public class CategoriesMapperTest {
     }
 
     @Test
-    public void test_toCategories_returnsCategoriesWithNullNameField_whenGivenNullNewCategoryDto() {
+    public void shouldToCategoriesReturnsCategoriesWithNullNameFieldWhenGivenNullNewCategoryDto() {
         NewCategoryDto newCategoryDto = null;
         Categories expected = Categories.builder()
                 .name(null)
@@ -61,7 +61,7 @@ public class CategoriesMapperTest {
     }
 
     @Test
-    public void test_toCategoryDto_returnsCategoryDtoWithSpecialCharactersInName() {
+    public void shouldToCategoryDtoReturnsCategoryDtoWithSpecialCharactersInName() {
         Categories categories = new Categories(1, "Test Category$");
         CategoryDto expected = CategoryDto.builder()
                 .id(1L)
@@ -74,7 +74,7 @@ public class CategoriesMapperTest {
     }
 
     @Test
-    public void test_toCategories_returnsCategoriesWithSpecialCharactersInName() {
+    public void shouldToCategoriesReturnsCategoriesWithSpecialCharactersInName() {
         NewCategoryDto newCategoryDto = NewCategoryDto.builder()
                 .name("Test Category$")
                 .build();

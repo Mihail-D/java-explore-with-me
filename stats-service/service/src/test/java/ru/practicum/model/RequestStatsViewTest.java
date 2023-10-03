@@ -7,11 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RequestStatsViewTest {
 
-    private RequestStatsView requestStatsView;
+    private StatisticsViewData requestStatsView;
 
     @BeforeEach
     public void setUp() {
-        requestStatsView = new RequestStatsView("TestApp", "/test/uri", 100);
+        requestStatsView = new StatisticsViewData("TestApp", "/test/uri", 100);
     }
 
     @Test

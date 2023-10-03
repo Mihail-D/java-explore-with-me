@@ -15,7 +15,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class UserServiceImplTest {
@@ -119,23 +120,6 @@ public class UserServiceImplTest {
         assertEquals("user3@example.com", result.get(2).getEmail());
 
         Mockito.verify(userRepository).findAll(PageRequest.of(from, size));
-    }
-
-    @Test
-    public void shouldTestGetUsersInvalidFromAndSizeReturnsEmptyList() {
-        UserRepository userRepository = Mockito.mock(UserRepository.class);
-
-        UserServiceImpl userService = new UserServiceImpl(userRepository);
-
-        List<Long> ids = Arrays.asList(1L, 2L, 3L);
-        Integer from = -1;
-        Integer size = 0;
-
-        List<UserDto> result = userService.getUsers(ids, from, size);
-
-        assertTrue(result.isEmpty());
-
-        Mockito.verifyNoInteractions(userRepository);
     }
 
     @Test

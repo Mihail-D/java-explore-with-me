@@ -10,7 +10,7 @@ import ru.practicum.main_service.categories.model.Categories;
 import ru.practicum.main_service.categories.repository.CategoriesRepository;
 import ru.practicum.main_service.event.repository.EventRepository;
 import ru.practicum.main_service.exception.ConflictException;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,11 +87,18 @@ public class CategoriesServiceImplTest {
 
         CategoriesServiceImpl categoriesService = new CategoriesServiceImpl(categoriesRepository, eventRepository);
 
-        List<CategoryDto> result = categoriesService.getCategories(null, null);
+        Integer from = null;
+        Integer size = null;
+
+        from = 0;
+        size = 10;
+
+        List<CategoryDto> result = categoriesService.getCategories(from, size);
 
         assertEquals(1, result.size());
         assertEquals("Category 1", result.get(0).getName());
     }
+
 
     @Test
     public void shouldTestGetCategoriesIdCategoryNotFound() {
@@ -102,7 +109,7 @@ public class CategoriesServiceImplTest {
 
         CategoriesServiceImpl categoriesService = new CategoriesServiceImpl(categoriesRepository, eventRepository);
 
-        assertThrows(ObjectNotFoundException.class, () -> categoriesService.getCategoriesId(1L));
+        assertThrows(EntityNotFoundException.class, () -> categoriesService.getCategoriesId(1L));
     }
 
     @Test

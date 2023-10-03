@@ -13,23 +13,20 @@ import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
+@Validated
 @Slf4j
 @RestController
-@Validated
 @RequiredArgsConstructor
 @RequestMapping("/admin/users")
 public class AdminUserController {
-
     private final UserService userService;
 
     @GetMapping
-    public List<UserDto> getUsers(
-            @RequestParam(required = false) List<Long> ids,
-            @RequestParam(required = false, defaultValue = "0")
-            @PositiveOrZero Integer from,
-            @RequestParam(required = false, defaultValue = "10")
-            @PositiveOrZero Integer size
-    ) {
+    public List<UserDto> getUsers(@RequestParam(required = false) List<Long> ids,
+                                  @RequestParam(required = false, defaultValue = "0")
+                                  @PositiveOrZero Integer from,
+                                  @RequestParam(required = false, defaultValue = "10")
+                                  @PositiveOrZero Integer size) {
         return userService.getUsers(ids, from, size);
     }
 
@@ -45,4 +42,5 @@ public class AdminUserController {
     public void deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
     }
+
 }

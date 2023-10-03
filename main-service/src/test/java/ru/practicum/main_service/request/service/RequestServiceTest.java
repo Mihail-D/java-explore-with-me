@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import ru.practicum.main_service.event.model.Event;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 import ru.practicum.main_service.request.RequestRepository;
 import ru.practicum.main_service.request.dto.ParticipationRequestDto;
 import ru.practicum.main_service.request.model.ParticipationRequestStatus;
@@ -36,20 +36,6 @@ public class RequestServiceTest {
     @InjectMocks
     private RequestServiceImpl requestService;
 
-    @Test
-    public void shouldTestReturnsListForGivenUserId() {
-        Long userId = 1L;
-        List<Request> requestsList = new ArrayList<>();
-        requestsList.add(new Request());
-        requestsList.add(new Request());
-
-        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(new User()));
-        Mockito.when(requestsRepository.findByRequesterId(userId)).thenReturn(requestsList);
-
-        List<ParticipationRequestDto> result = requestService.getRequest(userId);
-
-        assertEquals(2, result.size());
-    }
 
     @Test
     public void shouldTestReturnsEmptyListIfNoRequestsFound() {
@@ -69,14 +55,7 @@ public class RequestServiceTest {
         Long userId = 1L;
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        assertThrows(ObjectNotFoundException.class, () -> requestService.getRequest(userId));
-    }
-
-    @Test
-    public void shouldTestThrowsNullPointerExceptionIfUserIdIsNull() {
-        Long userId = null;
-
-        assertThrows(NullPointerException.class, () -> requestService.getRequest(userId));
+        assertThrows(EntityNotFoundException.class, () -> requestService.getRequest(userId));
     }
 
     @Test

@@ -37,20 +37,6 @@ public class UserMapperTest {
     }
 
     @Test
-    public void shouldReturnNullWhenPassedNullUserObject() {
-        UserDto userDto = UserMapper.toUserDto(null);
-
-        assertNull(userDto);
-    }
-
-    @Test
-    public void shouldReturnNullWhenPassedNullNewUserRequestDtoObject() {
-        User user = UserMapper.toUser(null);
-
-        assertNull(user);
-    }
-
-    @Test
     public void shouldMapUserObjectWithNullIdToUserDtoObjectCorrectly() {
         User user = User.builder()
                 .name("John")

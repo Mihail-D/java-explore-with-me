@@ -14,21 +14,16 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestHitEntity {
-
+public class StatisticsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Column
     private String app;
-
     @Column
     private String uri;
-
     @Column
     private String ip;
-
     @Column
     private LocalDateTime timestamp;
 }

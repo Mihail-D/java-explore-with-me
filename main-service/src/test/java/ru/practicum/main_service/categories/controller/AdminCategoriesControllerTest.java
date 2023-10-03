@@ -11,7 +11,7 @@ import static org.mockito.Mockito.*;
 public class AdminCategoriesControllerTest {
 
     @Test
-    public void shouldTestCreateCategoriesSSuccess() {
+    public void shouldTestCreateCategoriesSuccess() {
         NewCategoryDto newCategoryDto = mock(NewCategoryDto.class);
 
         CategoryDto categoryDto = mock(CategoryDto.class);
@@ -27,7 +27,7 @@ public class AdminCategoriesControllerTest {
     }
 
     @Test
-    public void test_createCategories_DuplicateName() {
+    public void shouldCreateCategoriesDuplicateName() {
         NewCategoryDto newCategoryDto = mock(NewCategoryDto.class);
 
         CategoriesService categoriesService = mock(CategoriesService.class);
@@ -40,7 +40,7 @@ public class AdminCategoriesControllerTest {
     }
 
     @Test
-    public void test_deleteCategories_Success() {
+    public void shouldDeleteCategoriesSuccess() {
         CategoriesService categoriesService = mock(CategoriesService.class);
 
         AdminCategoriesController adminCategoriesController = new AdminCategoriesController(categoriesService);
@@ -53,7 +53,7 @@ public class AdminCategoriesControllerTest {
     }
 
     @Test
-    public void test_deleteCategories_NonExistentCategory() {
+    public void shouldDeleteCategoriesNonExistentCategory() {
         CategoriesService categoriesService = mock(CategoriesService.class);
 
         doThrow(RuntimeException.class).when(categoriesService).deleteCategories(1L);
@@ -64,7 +64,7 @@ public class AdminCategoriesControllerTest {
     }
 
     @Test
-    public void test_updateCategories_Success() {
+    public void shouldUpdateCategoriesSuccess() {
         CategoryDto categoryDto = mock(CategoryDto.class);
 
         CategoriesService categoriesService = mock(CategoriesService.class);
@@ -78,7 +78,7 @@ public class AdminCategoriesControllerTest {
     }
 
     @Test
-    public void test_updateCategories_InvalidInput() {
+    public void shouldUpdateCategoriesInvalidInput() {
         CategoryDto categoryDto = mock(CategoryDto.class);
 
         CategoriesService categoriesService = mock(CategoriesService.class);

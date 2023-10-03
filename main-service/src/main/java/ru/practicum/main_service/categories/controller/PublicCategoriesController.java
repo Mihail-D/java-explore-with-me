@@ -10,8 +10,8 @@ import ru.practicum.main_service.categories.service.CategoriesService;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
-@RestController
 @Validated
+@RestController
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/categories")

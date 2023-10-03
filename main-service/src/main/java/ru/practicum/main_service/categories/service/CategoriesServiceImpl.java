@@ -12,26 +12,24 @@ import ru.practicum.main_service.categories.model.Categories;
 import ru.practicum.main_service.categories.repository.CategoriesRepository;
 import ru.practicum.main_service.event.repository.EventRepository;
 import ru.practicum.main_service.exception.ConflictException;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.apache.tomcat.util.collections.SynchronizedStack.DEFAULT_SIZE;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CategoriesServiceImpl implements CategoriesService {
-
     private final CategoriesRepository categoriesRepository;
     private final EventRepository eventRepository;
+
 
     @Override
     @Transactional(readOnly = true)
     public List<CategoryDto> getCategories(Integer from, Integer size) {
-        int offset = (from != null && from > 0 && size != null) ? from / size : 0;
-        PageRequest page = PageRequest.of(offset, size != null ? size : DEFAULT_SIZE);
+        int offset = from > 0 ? from / size : 0;
+        PageRequest page = PageRequest.of(offset, size);
         List<Categories> categoriesList = categoriesRepository.findAll(page).getContent();
         log.info("GET request to get a list of categories");
         return categoriesList.stream().map(CategoriesMapper::toCategoryDto).collect(Collectors.toList());
@@ -56,17 +54,19 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Override
     public void deleteCategories(Long catId) {
 
+
         var category = categoriesRepository.findById(catId);
 
         if (eventRepository.existsEventsByCategory_Id(catId)) {
             throw new ConflictException("There is already such a user");
         }
         categoriesRepository.deleteById(catId);
-        log.info("Request DELETE to delete category: id: {}", catId);
+        log.info("DELETE request to delete a category: with id: {}", catId);
     }
 
     @Override
     public CategoryDto updateCategories(CategoryDto categoryDto) {
+
 
         Categories categories = getCategoriesIfExist(categoryDto.getId());
 
@@ -75,12 +75,12 @@ public class CategoriesServiceImpl implements CategoriesService {
         }
 
         categories.setName(categoryDto.getName());
-        log.info("Request PATH to change category id: {}", categoryDto.getId());
+        log.info("PATH request to change category: with id: {}", categoryDto.getId());
         return CategoriesMapper.toCategoryDto(categoriesRepository.save(categories));
     }
 
     private Categories getCategoriesIfExist(Long catId) {
         return categoriesRepository.findById(catId).orElseThrow(
-                () -> new ObjectNotFoundException("Selected category not found"));
+                () -> new EntityNotFoundException("Selected category not found"));
     }
 }

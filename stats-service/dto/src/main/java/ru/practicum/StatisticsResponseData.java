@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StatsResponseDto {
-
+public class StatisticsResponseData {
     private String app;
     private String uri;
     private long hits;

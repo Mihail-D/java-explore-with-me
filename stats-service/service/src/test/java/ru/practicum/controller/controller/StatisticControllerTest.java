@@ -13,10 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.practicum.RequestHitInfoDto;
-import ru.practicum.StatsResponseDto;
-import ru.practicum.controller.StatisticsApiController;
-import ru.practicum.service.StatisticsProcessingService;
+import ru.practicum.StatisticsResponseData;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,26 +33,26 @@ class StatisticControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private StatisticsProcessingService statisticService;
+    private ru.practicum.service.StatisticsDataService statisticService;
     @InjectMocks
-    StatisticsApiController statisticController;
+    ru.practicum.controller.StatisticsApiController statisticController;
     private static final String HIT_URL = "/hit";
     private static final String STATS_URL = "/stats";
-    private RequestHitInfoDto hitRequestDto;
-    private StatsResponseDto statsResponseDto;
+    private ru.practicum.EndpointHitData hitRequestDto;
+    private StatisticsResponseData statsResponseDto;
 
     @BeforeEach
     void beforeEach() {
         String param = "2023-08-04 13:37:00";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime timestamp = LocalDateTime.parse(param, dateTimeFormatter);
-        hitRequestDto = RequestHitInfoDto.builder()
+        hitRequestDto = ru.practicum.EndpointHitData.builder()
                 .app("app")
                 .ip("ip")
                 .uri("uri")
                 .timestamp(timestamp)
                 .build();
-        statsResponseDto = StatsResponseDto.builder()
+        statsResponseDto = StatisticsResponseData.builder()
                 .app("app")
                 .uri("uri")
                 .hits(1L)

@@ -13,9 +13,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
+@Validated
 @Slf4j
 @RestController
-@Validated
 @RequiredArgsConstructor
 @RequestMapping("/users/{userId}/events")
 public class PrivateEventController {

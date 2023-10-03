@@ -15,7 +15,7 @@ import ru.practicum.main_service.event.dto.EventShortDto;
 import ru.practicum.main_service.event.dto.mapper.EventMapper;
 import ru.practicum.main_service.event.model.Event;
 import ru.practicum.main_service.event.repository.EventRepository;
-import ru.practicum.main_service.exception.ObjectNotFoundException;
+import ru.practicum.main_service.exception.EntityNotFoundException;
 import ru.practicum.main_service.users.dto.UserMapper;
 
 import java.util.ArrayList;
@@ -36,6 +36,7 @@ public class CompilationServiceImpl implements CompilationService {
         int offset = from > 0 ? from / size : 0;
         PageRequest page = PageRequest.of(offset, size);
         List<Compilation> compilations;
+
         if (pinned == null) {
             compilations = compilationsRepository.findAll(page).getContent();
         } else {
@@ -129,6 +130,6 @@ public class CompilationServiceImpl implements CompilationService {
 
     private Compilation getCompilation(Long compId) {
         return compilationsRepository.findById(compId)
-                .orElseThrow(() -> new ObjectNotFoundException("This collection does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("This collection does not exist"));
     }
 }

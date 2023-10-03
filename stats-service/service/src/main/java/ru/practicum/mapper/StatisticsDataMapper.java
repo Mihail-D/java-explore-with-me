@@ -1,16 +1,15 @@
 package ru.practicum.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.RequestHitInfoDto;
-import ru.practicum.StatsResponseDto;
-import ru.practicum.model.RequestHitEntity;
-import ru.practicum.model.RequestStatsView;
+import ru.practicum.EndpointHitData;
+import ru.practicum.StatisticsResponseData;
+import ru.practicum.model.StatisticsEntity;
+import ru.practicum.model.StatisticsViewData;
 
 @UtilityClass
-public class StatsDtoModelMapper {
-
-    public static RequestHitEntity toStats(RequestHitInfoDto endpointHitRequestDto) {
-        return RequestHitEntity.builder()
+public class StatisticsDataMapper {
+    public StatisticsEntity toStats(EndpointHitData endpointHitRequestDto) {
+        return StatisticsEntity.builder()
                 .ip(endpointHitRequestDto.getIp())
                 .timestamp(endpointHitRequestDto.getTimestamp())
                 .uri(endpointHitRequestDto.getUri())
@@ -18,8 +17,8 @@ public class StatsDtoModelMapper {
                 .build();
     }
 
-    public static StatsResponseDto toStatsResponseDto(RequestStatsView viewStats) {
-        return StatsResponseDto.builder()
+    public StatisticsResponseData toStatsResponseDto(StatisticsViewData viewStats) {
+        return StatisticsResponseData.builder()
                 .app(viewStats.getApp())
                 .uri(viewStats.getUri())
                 .hits(viewStats.getCount())
