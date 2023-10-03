@@ -1,5 +1,6 @@
 package ru.practicum.main_service.locations.service;
 
+import org.springframework.data.domain.Pageable;
 import ru.practicum.main_service.locations.dto.LocationResponseDto;
 import ru.practicum.main_service.locations.dto.NewLocationDto;
 import ru.practicum.main_service.locations.dto.UpdateLocationDto;
@@ -16,7 +17,7 @@ public interface LocationService {
 
     LocationResponseDto getLocation(long id);
 
-    List<LocationResponseDto> getLocations(Integer from, Integer size);
+    List<LocationResponseDto> getLocations(Pageable pageable);
 
     LocationResponseDto confirmLocation(long id, boolean approved);
 }

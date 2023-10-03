@@ -1,6 +1,7 @@
 package ru.practicum.main_service.locations.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,8 @@ public class PublicLocationController {
     }
 
     @GetMapping
-    public List<LocationResponseDto> getLocations(
-            @RequestParam(defaultValue = "0") Integer from,
-            @RequestParam(defaultValue = "10") Integer size
-    ) {
-        return locationService.getLocations(from, size);
+    public List<LocationResponseDto> getLocations(Pageable pageable) {
+        return locationService.getLocations(pageable);
     }
 
     @PostMapping

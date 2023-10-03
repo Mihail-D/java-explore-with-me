@@ -2,7 +2,9 @@ package ru.practicum.main_service.locations.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_service.exception.ConflictException;
@@ -80,12 +82,12 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public List<LocationResponseDto> getLocations(Integer from, Integer size) {
-        int offset = from > 0 ? from / size : 0;
-        PageRequest page = PageRequest.of(offset, size, Sort.by("id"));
-        List<Location> locationList = locationRepository.findAll(page).getContent();
-        log.info("GET request to get a list of categories");
-        return locationList.stream().map(LocationMapper::toLocationResponseDto).collect(Collectors.toList());
+    public List<LocationResponseDto> getLocations(Pageable pageable) {
+        Page<Location> locationPage = locationRepository.findAll(pageable);
+        List<Location> locations = locationPage.getContent();
+        return locations.stream()
+                .map(LocationMapper::toLocationResponseDto)
+                .collect(Collectors.toList());
     }
 
     @Override
