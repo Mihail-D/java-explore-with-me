@@ -107,10 +107,9 @@ public class PublicLocationControllerTest {
         LocationService locationService = Mockito.mock(LocationService.class);
         PublicLocationController controller = new PublicLocationController(locationService);
 
-        {
-            ResponseEntity<List<LocationResponseDto>> response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        }
+        ResponseEntity<List<LocationResponseDto>> response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
     }
 
     @Test
