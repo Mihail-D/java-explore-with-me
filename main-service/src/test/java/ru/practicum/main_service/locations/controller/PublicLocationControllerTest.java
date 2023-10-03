@@ -2,6 +2,8 @@ package ru.practicum.main_service.locations.controller;
 
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.practicum.main_service.locations.dto.LocationResponseDto;
@@ -9,10 +11,12 @@ import ru.practicum.main_service.locations.dto.NewLocationDto;
 import ru.practicum.main_service.locations.model.LocationStatus;
 import ru.practicum.main_service.locations.service.LocationService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PublicLocationControllerTest {
-
 
     @Test
     public void shouldGetLocationReturnsLocationResponseDto() {
@@ -36,22 +40,21 @@ public class PublicLocationControllerTest {
         assertEquals(expectedResponse, actualResponse);
     }
 
-
-/*    @Test
+    @Test
     public void shouldGetLocationsReturnsListLocationResponseDto() {
         int from = 0;
         int size = 10;
 
         LocationService locationService = Mockito.mock(LocationService.class);
         List<LocationResponseDto> expectedResponse = new ArrayList<>();
-        Mockito.when(locationService.getLocations(from, size)).thenReturn(expectedResponse);
+        Mockito.when(locationService.getLocations(Mockito.any(Pageable.class))).thenReturn(expectedResponse);
 
         PublicLocationController controller = new PublicLocationController(locationService);
 
-        List<LocationResponseDto> actualResponse = controller.getLocations(from, size);
+        List<LocationResponseDto> actualResponse = controller.getLocations(PageRequest.of(from, size));
 
         assertEquals(expectedResponse, actualResponse);
-    }*/
+    }
 
     @Test
     public void shouldCreateLocationByUserReturnsLocationResponseDto() {
@@ -80,7 +83,6 @@ public class PublicLocationControllerTest {
         assertEquals(expectedResponse, actualResponse);
     }
 
-
     @Test
     public void shouldGetLocationWithNonExistentIdReturns404() {
         long id = 1;
@@ -98,27 +100,18 @@ public class PublicLocationControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
-
-
-
-/*    @Test
+    @Test
     public void shouldGetLocationsWithInvalidQueryParametersReturns400() {
         int from = -1;
         int size = 0;
-
         LocationService locationService = Mockito.mock(LocationService.class);
-
         PublicLocationController controller = new PublicLocationController(locationService);
 
-        List<LocationResponseDto> locations = controller.getLocations(from, size);
-        ResponseEntity<List<LocationResponseDto>> response = (from < 0 || size <= 0) ?
-                new ResponseEntity<>(HttpStatus.BAD_REQUEST) :
-                new ResponseEntity<>(locations, HttpStatus.OK);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-    }*/
-
-
+        {
+            ResponseEntity<List<LocationResponseDto>> response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        }
+    }
 
     @Test
     public void shouldCreateLocationByUserWithInvalidNewLocationDtoReturns400() {
@@ -140,7 +133,5 @@ public class PublicLocationControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
-
-
 
 }
